@@ -5,7 +5,7 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
     public int MapSizeInChunks = 6;
-    public int ChunkSize = 16, chunkHeight = 100;
+    public int ChunkSize = 16, ChunkHeight = 100;
     public int WaterThreshold = 50;
     public float NoiseScale = 0.03f;
     public GameObject ChunkPrefab;
@@ -15,6 +15,8 @@ public class World : MonoBehaviour
 
     public void GenerateWorld()
     {
+        GameObject world = GameObject.FindWithTag("World");
+        
         chunks.Clear();
         foreach (var chunk in chunkRenderers.Values)
             Destroy(chunk.gameObject);
@@ -23,7 +25,7 @@ public class World : MonoBehaviour
         {
             for (int y = 0; y < MapSizeInChunks; y++)
             {
-                Chunk data = new Chunk(ChunkSize, chunkHeight, this,
+                Chunk data = new Chunk(ChunkSize, ChunkHeight, this,
                     new Vector3Int(x * ChunkSize, 0, y * ChunkSize));
                 generateVoxels(data);
                 chunks.Add(data.WorldPosition, data);
@@ -33,6 +35,7 @@ public class World : MonoBehaviour
         foreach (var chunk in chunks.Values)
         {
             GameObject chunkObject = Instantiate(ChunkPrefab, chunk.WorldPosition, Quaternion.identity);
+            chunkObject.transform.parent = world.transform;
             ChunkRenderer chunkRenderer = chunkObject.GetComponent<ChunkRenderer>();
             chunkRenderers.Add(chunk.WorldPosition, chunkRenderer);
             chunkRenderer.InitChunk(chunk);
@@ -53,7 +56,7 @@ public class World : MonoBehaviour
     {
         Vector3Int chunkStartPos = new Vector3Int(
             Mathf.FloorToInt(globalPosition.x / (float)ChunkSize) * ChunkSize,
-            Mathf.FloorToInt(globalPosition.y / (float)chunkHeight) * chunkHeight,
+            Mathf.FloorToInt(globalPosition.y / (float)ChunkHeight) * ChunkHeight,
             Mathf.FloorToInt(globalPosition.z / (float)ChunkSize) * ChunkSize);
         chunks.TryGetValue(chunkStartPos, out Chunk chunk);
         return chunk;
@@ -67,8 +70,8 @@ public class World : MonoBehaviour
             {
                 float noiseValue = Mathf.PerlinNoise((chunk.WorldPosition.x + x) * NoiseScale,
                     (chunk.WorldPosition.z + z) * NoiseScale);
-                int groundPosition = Mathf.RoundToInt(noiseValue * chunkHeight);
-                for (int y = 0; y < chunkHeight; y++)
+                int groundPosition = Mathf.RoundToInt(noiseValue * ChunkHeight);
+                for (int y = 0; y < ChunkHeight; y++)
                 {
                     BlockType voxelType = BlockType.Dirt;
                     if (y > groundPosition)

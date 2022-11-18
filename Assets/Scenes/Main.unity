@@ -533,7 +533,7 @@ GameObject:
   - component: {fileID: 1153445572}
   m_Layer: 0
   m_Name: == World ==
-  m_TagString: Untagged
+  m_TagString: World
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -565,7 +565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4fc35d92ab6d6f439a1eccfdd042da4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapSizeInChunks: 6
+  MapSizeInChunks: 20
   ChunkSize: 16
   chunkHeight: 100
   WaterThreshold: 39
