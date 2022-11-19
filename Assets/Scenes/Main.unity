@@ -567,11 +567,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapSizeInChunks: 20
   ChunkSize: 16
-  chunkHeight: 100
-  WaterThreshold: 39
-  NoiseScale: 0.03
+  ChunkHeight: 100
+  WaterThreshold: 10
   ChunkPrefab: {fileID: 5911899811142283208, guid: 675235fd7946de64bb303f4f30bd6975,
     type: 3}
+  MapSeedOffset: {x: 0, y: 0}
 --- !u!1 &1218237216
 GameObject:
   m_ObjectHideFlags: 0
@@ -697,6 +697,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockAtlas: {fileID: 11400000, guid: cbc2b047d0226f94d9beb4fc20752cfd, type: 2}
+  customNoiseSettings: {fileID: 11400000, guid: 576fbcc7430ca4b48b6067dc1d557f71,
+    type: 2}
   textureOffset: 0.001
 --- !u!1 &1400068757
 GameObject:

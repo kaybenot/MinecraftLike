@@ -7,9 +7,9 @@ public class World : MonoBehaviour
     public int MapSizeInChunks = 6;
     public int ChunkSize = 16, ChunkHeight = 100;
     public int WaterThreshold = 50;
-    public float NoiseScale = 0.03f;
     public GameObject ChunkPrefab;
-    
+    public Vector2Int MapSeedOffset;
+
     private Dictionary<Vector3Int, Chunk> chunks = new Dictionary<Vector3Int, Chunk>();
     private Dictionary<Vector3Int, ChunkRenderer> chunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
 
@@ -27,7 +27,7 @@ public class World : MonoBehaviour
             {
                 Chunk data = new Chunk(ChunkSize, ChunkHeight, this,
                     new Vector3Int(x * ChunkSize, 0, y * ChunkSize));
-                generateVoxels(data);
+                data.GenerateChunk(MapSeedOffset, WaterThreshold);
                 chunks.Add(data.WorldPosition, data);
             }
         }
@@ -60,27 +60,5 @@ public class World : MonoBehaviour
             Mathf.FloorToInt(globalPosition.z / (float)ChunkSize) * ChunkSize);
         chunks.TryGetValue(chunkStartPos, out Chunk chunk);
         return chunk;
-    }
-
-    private void generateVoxels(Chunk chunk)
-    {
-        for (int x = 0; x < chunk.ChunkSize; x++)
-        {
-            for (int z = 0; z < chunk.ChunkSize; z++)
-            {
-                float noiseValue = Mathf.PerlinNoise((chunk.WorldPosition.x + x) * NoiseScale,
-                    (chunk.WorldPosition.z + z) * NoiseScale);
-                int groundPosition = Mathf.RoundToInt(noiseValue * ChunkHeight);
-                for (int y = 0; y < ChunkHeight; y++)
-                {
-                    BlockType voxelType = BlockType.Dirt;
-                    if (y > groundPosition)
-                        voxelType = y < WaterThreshold ? BlockType.Water : BlockType.Air;
-                    else if (y == groundPosition)
-                        voxelType = BlockType.GrassDirt;
-                    chunk.SetBlock(new Vector3Int(x, y, z), voxelType);
-                }
-            }
-        }
     }
 }
