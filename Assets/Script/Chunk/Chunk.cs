@@ -10,6 +10,7 @@ public class Chunk
     public int ChunkHeight { get; }
     public World World { get; }
     public Vector3Int WorldPosition { get; }
+    public Biome Biome { get; private set; }
     public bool ModifiedByPlayer { get; set; }
     
     public Chunk(int chunkSize, int chunkHeight, World world, Vector3Int worldPosition)
@@ -24,6 +25,9 @@ public class Chunk
                 for(int z = 0; z < chunkSize; z++)
                     Blocks[x, y, z] = new Block(new Vector3Int(x, y, z), BlockType.Air);
         ModifiedByPlayer = false;
+        
+        // TODO: Implement picking biomes
+        Biome = GameObject.FindWithTag("PlainsBiome").GetComponent<Biome>();
     }
 
     public void GenerateChunk(Vector2Int mapSeedOffset, int waterThreshold)
@@ -76,14 +80,7 @@ public class Chunk
         
         for (int y = 0; y < ChunkHeight; y++)
         {
-            BlockType voxelType = BlockType.Dirt;
-            if (y > groundPosition)
-                voxelType = y < waterThreshold ? BlockType.Water : BlockType.Air;
-            else if (y == groundPosition && y < waterThreshold)
-                voxelType = BlockType.Sand;
-            else if (y == groundPosition)
-                voxelType = BlockType.GrassDirt;
-            SetBlock(new Vector3Int(x, y, z), voxelType);
+            Biome.StartLayer.Handle(this, new Vector3Int(x, y, z), groundPosition, mapSeedOffset);
         }
     }
 
