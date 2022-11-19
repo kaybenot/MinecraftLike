@@ -79,9 +79,10 @@ public class Chunk
         int groundPosition = getSurfaceHeightNoise(WorldPosition.x + x, WorldPosition.z + z);
         
         for (int y = 0; y < ChunkHeight; y++)
-        {
             Biome.StartLayer.Handle(this, new Vector3Int(x, y, z), groundPosition, mapSeedOffset);
-        }
+        
+        foreach (var layer in Biome.AdditionalLayers)
+            layer.Handle(this, new Vector3Int(x, WorldPosition.y, z), groundPosition, mapSeedOffset);
     }
 
     private int getSurfaceHeightNoise(int x, int z)

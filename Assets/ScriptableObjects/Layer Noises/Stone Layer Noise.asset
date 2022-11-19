@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Stone Layer Noise
+  m_EditorClassIdentifier: Assembly-CSharp::CustomNoiseSettings
+  NoiseZoom: 0.01
+  Octaves: 1
+  Offset: {x: -4000, y: 2000}
+  WorldOffset: {x: 0, y: 0}
+  Persistance: 0.5
+  RedistributionModifier: 1.2
+  Exponent: 4

@@ -586,6 +586,7 @@ GameObject:
   - component: {fileID: 1161349292}
   - component: {fileID: 1161349293}
   - component: {fileID: 1161349294}
+  - component: {fileID: 1161349296}
   m_Layer: 0
   m_Name: Plains
   m_TagString: PlainsBiome
@@ -676,6 +677,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartLayer: {fileID: 1161349291}
+  AdditionalLayers:
+  - {fileID: 1161349296}
+--- !u!114 &1161349296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1161349289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc0d4eaa6dae7d645966bf1a0213331f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  next: {fileID: 0}
+  stoneThreshold: 0.5
+  stoneNoiseSettings: {fileID: 11400000, guid: c172bdf551c6e8543a2f01ab37be4e08, type: 2}
 --- !u!1 &1218237216
 GameObject:
   m_ObjectHideFlags: 0
