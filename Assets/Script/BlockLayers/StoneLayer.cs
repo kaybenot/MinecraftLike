@@ -7,6 +7,7 @@ public class StoneLayer : BlockLayer
 {
     [SerializeField, Range(0, 1)] public float stoneThreshold = 0.5f;
     [SerializeField] private CustomNoiseSettings stoneNoiseSettings;
+    [SerializeField] private DomainWarping DomainWarping;
 
     protected override bool TryGenerate(Chunk chunk, Vector3Int position, int surfaceHeightNoise, Vector2Int mapSeedOffset)
     {
@@ -14,8 +15,7 @@ public class StoneLayer : BlockLayer
             return false;
 
         stoneNoiseSettings.WorldOffset = mapSeedOffset;
-        float stoneNoise = CustomNoise.OctavePerlin(chunk.WorldPosition.x + position.x,
-            chunk.WorldPosition.z + position.z, stoneNoiseSettings);
+        float stoneNoise = DomainWarping.GenerateDomainNoise(position.x + chunk.WorldPosition.x, position.z + chunk.WorldPosition.z, stoneNoiseSettings);
 
         int endPosition = surfaceHeightNoise;
         if (chunk.WorldPosition.y < 0)

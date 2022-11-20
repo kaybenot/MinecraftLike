@@ -87,7 +87,11 @@ public class Chunk
 
     private int getSurfaceHeightNoise(int x, int z)
     {
-        float terrainHeight = CustomNoise.OctavePerlin(x, z, GameManager.CustomNoiseSettings);
+        float terrainHeight;
+        if (Biome.UseDomainWarping)
+            terrainHeight = Biome.DomainWarping.GenerateDomainNoise(x, z, GameManager.CustomNoiseSettings);
+        else
+            terrainHeight = CustomNoise.OctavePerlin(x, z, GameManager.CustomNoiseSettings);
         terrainHeight = CustomNoise.Redistribution(terrainHeight, GameManager.CustomNoiseSettings);
         int surfaceHeight = CustomNoise.RemapValue01Int(terrainHeight, 0f, ChunkHeight);
         return surfaceHeight;

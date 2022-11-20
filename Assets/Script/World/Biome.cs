@@ -6,4 +6,6 @@ public class Biome : MonoBehaviour
 {
     public BlockLayer StartLayer;
     public List<BlockLayer> AdditionalLayers;
+    public bool UseDomainWarping = true;
+    public DomainWarping DomainWarping;
 }
