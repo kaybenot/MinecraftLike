@@ -65,7 +65,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.15
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -832,7 +832,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6038d2a7367daf44cb866ecc49a0d132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  player: {fileID: 3791526165130123504}
+  playerHead: {fileID: 3791526165130123508}
+  speed: 2.5
+  jumpHeight: 1.2
 --- !u!95 &3791526165139647264
 Animator:
   serializedVersion: 6
@@ -861,7 +864,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3791526165130123504}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 7d172c348395e234c9b1c8e9bda6beda, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -898,7 +901,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -960,6 +963,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 60cd0d0e-9a49-4ab4-83e4-f807e1ae9fb2
     m_ActionName: Player/Look[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4756606994710942796}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: Jump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7f921a0d-60ad-4a45-86e1-1a0914ba5dbb
+    m_ActionName: Player/Jump[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
