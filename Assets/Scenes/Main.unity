@@ -442,7 +442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   next: {fileID: 1161349292}
-  waterLayer: 8
+  waterLayer: 3
 --- !u!114 &1161349292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -580,10 +580,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockAtlas: {fileID: 11400000, guid: cbc2b047d0226f94d9beb4fc20752cfd, type: 2}
   textureOffset: 0.001
-  mapSizeInChunks: 6
+  mapSizeInChunks: 1
   chunkSize: 16
   chunkHeight: 100
-  waterThreshold: 50
+  waterThreshold: 3
   chunkPrefab: {fileID: 5911899811142283208, guid: 675235fd7946de64bb303f4f30bd6975,
     type: 3}
   mapSeedOffset: {x: 9764, y: 6823}

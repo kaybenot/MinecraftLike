@@ -1,11 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+struct WorldGenData
+{
+    public List<Vector3Int> chunkDataToCreate;
+    public List<Vector3Int> chunksToCreate;
+    public List<Vector3Int> chunksToRemove;
+    public List<Vector3Int> chunkDataToRemove;
+}
+
 public class World
 {
-    public int SizeInChunks { get; }
+    public int RenderDistance { get; }
     public int ChunkSize { get; }
     public int ChunkHeight { get; }
     public int WaterThreshold { get; }
@@ -15,45 +24,22 @@ public class World
     private Dictionary<Vector3Int, Chunk> chunks = new Dictionary<Vector3Int, Chunk>();
     private Dictionary<Vector3Int, ChunkRenderer> chunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
 
-    public World(GameObject chunkPrefab, Vector2Int mapSeed, int sizeInChunks = 10, int chunkSize = 16,
+    private static GameObject worldObj;
+
+    public World(GameObject chunkPrefab, Vector2Int mapSeed, int renderDistance = 10, int chunkSize = 16,
         int chunkHeight = 100, int waterThreshold = 10)
     {
-        SizeInChunks = sizeInChunks;
+        RenderDistance = renderDistance;
         ChunkSize = chunkSize;
         ChunkHeight = chunkHeight;
         WaterThreshold = waterThreshold;
         ChunkPrefab = chunkPrefab;
         MapSeed = mapSeed;
     }
-    
+
     public void GenerateWorld()
     {
-        GameObject worldObj = new GameObject("World");
-        
-        chunks.Clear();
-        foreach (var chunk in chunkRenderers.Values)
-            Object.Destroy(chunk.gameObject);
-        chunkRenderers.Clear();
-        for (int x = 0; x < SizeInChunks; x++)
-        {
-            for (int y = 0; y < SizeInChunks; y++)
-            {
-                Chunk data = new Chunk(ChunkSize, ChunkHeight, this,
-                    new Vector3Int(x * ChunkSize, 0, y * ChunkSize));
-                data.GenerateChunk(MapSeed, WaterThreshold);
-                chunks.Add(data.WorldPosition, data);
-            }
-        }
-
-        foreach (var chunk in chunks.Values)
-        {
-            GameObject chunkObject = Object.Instantiate(ChunkPrefab, chunk.WorldPosition, Quaternion.identity);
-            chunkObject.transform.parent = worldObj.transform;
-            ChunkRenderer chunkRenderer = chunkObject.GetComponent<ChunkRenderer>();
-            chunkRenderers.Add(chunk.WorldPosition, chunkRenderer);
-            chunkRenderer.InitChunk(chunk);
-            chunkRenderer.UpdateChunk(chunk.GetChunkMesh());
-        }
+        generateWorld(Vector3Int.zero);
     }
 
     public Block GetBlock(Vector3Int globalPosition)
@@ -63,6 +49,14 @@ public class World
             return null;
         Vector3Int blockPosition = chunk.GetLocalPosition(globalPosition);
         return chunk.GetBlock(blockPosition);
+    }
+
+    public Vector3Int GetChunkPosition(Vector3Int globalPosition)
+    {
+        return new Vector3Int(
+            Mathf.FloorToInt(globalPosition.x / (float)ChunkSize) * ChunkSize,
+            Mathf.FloorToInt(globalPosition.y / (float)ChunkHeight) * ChunkHeight,
+            Mathf.FloorToInt(globalPosition.z / (float)ChunkSize) * ChunkSize);
     }
 
     public Chunk GetChunk(Vector3Int globalPosition)
@@ -77,7 +71,143 @@ public class World
 
     public void LoadAdditionalChunksRequest(Player player)
     {
-        Debug.Log("Load more chunks");
+        generateWorld(player.BlockPosition);
         GameManager.OnNewChunksGenerated?.Invoke();
+    }
+    
+    private void generateWorld(Vector3Int position)
+    {
+        if(worldObj == null)
+            worldObj = new GameObject("World");
+        
+        WorldGenData worldGenData = getGenerationData(position);
+
+        foreach (var pos in worldGenData.chunksToRemove)
+            removeChunk(pos);
+        foreach (var pos in worldGenData.chunkDataToRemove)
+            removeChunkData(pos);
+        
+        foreach (var pos in worldGenData.chunkDataToCreate)
+        {
+            Chunk chunk = new Chunk(ChunkSize, ChunkHeight, this, pos);
+            chunk.GenerateChunk(MapSeed, WaterThreshold);
+            chunks.Add(pos, chunk);
+        }
+        foreach (var pos in worldGenData.chunksToCreate)
+        {
+            Chunk chunk = chunks[pos];
+            ChunkMesh mesh = chunk.GetChunkMesh();
+            GameObject chunkObj = Object.Instantiate(ChunkPrefab, pos, Quaternion.identity);
+            chunkObj.transform.parent = worldObj.transform;
+            ChunkRenderer chunkRenderer = chunkObj.GetComponent<ChunkRenderer>();
+            chunkRenderers.Add(pos, chunkRenderer);
+            chunkRenderer.InitChunk(chunk);
+            chunkRenderer.UpdateChunk(mesh);
+        }
+    }
+
+    private void removeChunk(Vector3Int pos)
+    {
+        if (chunkRenderers.TryGetValue(pos, out ChunkRenderer chunkRenderer))
+        {
+            chunkRenderer.gameObject.SetActive(false);
+            chunkRenderers.Remove(pos);
+        }
+    }
+
+    private void removeChunkData(Vector3Int pos)
+    {
+        chunks.Remove(pos);
+    }
+
+    private List<Vector3Int> getChunkPositionsAroundPlayer(Vector3Int playerPos)
+    {
+        List<Vector3Int> chunks = new List<Vector3Int>();
+
+        int startX = playerPos.x - RenderDistance * ChunkSize;
+        int startZ = playerPos.z - RenderDistance * ChunkSize;
+        int endX = playerPos.x + RenderDistance * ChunkSize;
+        int endZ = playerPos.z + RenderDistance * ChunkSize;
+
+        for (int x = startX; x <= endX; x += ChunkSize)
+        {
+            for (int z = startZ; z <= endZ; z += ChunkSize)
+            {
+                var chunkPos = GetChunkPosition(new Vector3Int(x, 0, z));
+                chunks.Add(chunkPos);
+            }
+        }
+        
+        return chunks;
+    }
+    
+    private List<Vector3Int> getChunkDataAroundPlayer(Vector3Int playerPos)
+    {
+        List<Vector3Int> chunks = new List<Vector3Int>();
+
+        int startX = playerPos.x - (RenderDistance + 1) * ChunkSize;
+        int startZ = playerPos.z - (RenderDistance + 1) * ChunkSize;
+        int endX = playerPos.x + (RenderDistance + 1) * ChunkSize;
+        int endZ = playerPos.z + (RenderDistance + 1) * ChunkSize;
+
+        for (int x = startX; x <= endX; x += ChunkSize)
+        {
+            for (int z = startZ; z <= endZ; z += ChunkSize)
+            {
+                var chunkPos = GetChunkPosition(new Vector3Int(x, 0, z));
+                chunks.Add(chunkPos);
+            }
+        }
+        
+        return chunks;
+    }
+    
+    private List<Vector3Int> selectNewChunkData(Vector3Int playerPos, List<Vector3Int> chunkDataAroundPlayer)
+    {
+        return chunkDataAroundPlayer
+            .Where(pos => !chunks.ContainsKey(pos))
+            .OrderBy(pos => Vector3Int.Distance(playerPos, pos))
+            .ToList();
+    }
+
+    private List<Vector3Int> selectChunksToCreate(Vector3Int playerPos, List<Vector3Int> chunksAroundPlayer)
+    {
+        return chunksAroundPlayer
+            .Where(pos => !chunkRenderers.ContainsKey(pos))
+            .OrderBy(pos => Vector3Int.Distance(playerPos, pos))
+            .ToList();
+    }
+
+    private List<Vector3Int> getRedundantChunks(List<Vector3Int> chunkDataAroundPlayer)
+    {
+        List<Vector3Int> chunks = new List<Vector3Int>();
+        foreach (var pos in chunkRenderers.Keys.Where(pos => !chunkDataAroundPlayer.Contains(pos)))
+        {
+            if(chunkRenderers.ContainsKey(pos))
+                chunks.Add(pos);
+        }
+
+        return chunks;
+    }
+    
+    private List<Vector3Int> getRedundantChunkData(List<Vector3Int> chunkDataAroundPlayer)
+    {
+        return chunks.Keys.Where(pos => !chunkDataAroundPlayer.Contains(pos)).ToList();
+    }
+
+    private WorldGenData getGenerationData(Vector3Int playerPos)
+    {
+        var chunkDataAroundPlayer = getChunkDataAroundPlayer(playerPos);
+        var chunksAroundPlayer = getChunkPositionsAroundPlayer(playerPos);
+        var chunkDataToCreate = selectNewChunkData(playerPos, chunkDataAroundPlayer);
+        var chunksToCreate = selectChunksToCreate(playerPos, chunksAroundPlayer);
+        
+        return new WorldGenData()
+        {
+            chunkDataToCreate = chunkDataToCreate,
+            chunksToCreate = chunksToCreate,
+            chunkDataToRemove = getRedundantChunkData(chunkDataAroundPlayer),
+            chunksToRemove = getRedundantChunks(chunksAroundPlayer)
+        };
     }
 }
