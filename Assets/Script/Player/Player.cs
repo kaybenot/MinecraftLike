@@ -7,16 +7,18 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [SerializeField, Range(0f, 1f)] private float sensitivity = 0.3f;
+    [SerializeField] private LayerMask groundMask = -1;
     
     [Header("Player body components")]
     [SerializeField] private Transform player;
     [SerializeField] private Transform playerHead;
     
-    [Header("Player movement properties")]
+    [Header("Player properties")]
     [SerializeField, Min(0f)] private float speed = 2f;
     [SerializeField, Range(1f, 2f)] private float runMultiplier = 1.5f;
     [SerializeField, Min(0f)] private float jumpHeight = 1.2f;
     [SerializeField] private float groundMaxAngle = 30f;
+    [SerializeField] private float range = 4f;
     
     public bool Grounded { get; private set; }
     public Action OnAttack { get; set; }
@@ -39,6 +41,7 @@ public class Player : MonoBehaviour
         
 
     private Rigidbody rb;
+    private Camera cam;
     private Vector3 inputForce;
     private Animator animator;
     private float minGroundDotProduct;
@@ -46,8 +49,10 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        OnAttack += destroyBlock;
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        cam = Camera.main;
 
         minGroundDotProduct = Mathf.Cos(groundMaxAngle * Mathf.Deg2Rad);
     }
@@ -124,5 +129,17 @@ public class Player : MonoBehaviour
             speed *= runMultiplier;
         else if (context.canceled)
             speed /= runMultiplier;
+    }
+
+    private void destroyBlock()
+    {
+        Ray playerRay = new Ray(cam.transform.position, cam.transform.forward);
+        if (Physics.Raycast(playerRay, out RaycastHit hit, range, groundMask))
+            modifyTerrain(hit);
+    }
+
+    private void modifyTerrain(RaycastHit hit)
+    {
+        GameManager.World.SetBlock(hit, BlockType.Air);
     }
 }

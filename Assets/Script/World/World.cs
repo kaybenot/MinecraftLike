@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 struct WorldGenData
 {
@@ -49,6 +51,44 @@ public class World
             return null;
         Vector3Int blockPosition = chunk.GetLocalPosition(globalPosition);
         return chunk.GetBlock(blockPosition);
+    }
+
+    public void SetBlock(Vector3Int globalPosition, BlockType blockType)
+    {
+        Chunk chunk = GetChunk(globalPosition);
+        if (chunk != null)
+        {
+            Vector3Int localPos = chunk.GetLocalPosition(globalPosition);
+            chunk.SetBlock(localPos, blockType);
+        }
+    }
+
+    public bool SetBlock(RaycastHit hit, BlockType blockType)
+    {
+        var renderer = hit.transform.GetComponent<ChunkRenderer>();
+        if (renderer == null)
+            return false;
+        var pos = getBlockPos(hit);
+        SetBlock(pos, blockType);
+        renderer.Chunk.ModifiedByPlayer = true;
+        renderer.UpdateChunk();
+        return true;
+    }
+
+    private Vector3Int getBlockPos(RaycastHit hit)
+    {
+        var pos = new Vector3(
+            GetBlockPositionIn(hit.point.x, hit.normal.x),
+            GetBlockPositionIn(hit.point.y, hit.normal.y),
+            GetBlockPositionIn(hit.point.z, hit.normal.z));
+        return Vector3Int.RoundToInt(pos);
+    }
+
+    private float GetBlockPositionIn(float pos, float normal)
+    {
+        if (Math.Abs(Mathf.Abs(pos % 1) - 0.5f) < 0.001f)
+            pos -= (normal / 2);
+        return pos;
     }
 
     public Vector3Int GetChunkPosition(Vector3Int globalPosition)

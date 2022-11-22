@@ -73,7 +73,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 183
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -818,7 +818,7 @@ Transform:
   - {fileID: 3791526165129823460}
   - {fileID: 3791526165129823464}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4756606994710942796
 MonoBehaviour:
@@ -833,12 +833,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sensitivity: 0.3
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 128
   player: {fileID: 3791526165129823440}
   playerHead: {fileID: 3791526165129823444}
   speed: 2.5
   runMultiplier: 1.5
   jumpHeight: 1.2
   groundMaxAngle: 30
+  range: 4
 --- !u!95 &3791526165139647264
 Animator:
   serializedVersion: 6
