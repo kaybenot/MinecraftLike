@@ -1,41 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class World : MonoBehaviour
+public class World
 {
-    public int MapSizeInChunks = 6;
-    public int ChunkSize = 16, ChunkHeight = 100;
-    public int WaterThreshold = 50;
-    public GameObject ChunkPrefab;
-    public Vector2Int MapSeedOffset;
+    public int SizeInChunks { get; }
+    public int ChunkSize { get; }
+    public int ChunkHeight { get; }
+    public int WaterThreshold { get; }
+    public GameObject ChunkPrefab { get; }
+    public Vector2Int MapSeed { get; }
 
     private Dictionary<Vector3Int, Chunk> chunks = new Dictionary<Vector3Int, Chunk>();
     private Dictionary<Vector3Int, ChunkRenderer> chunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
 
+    public World(GameObject chunkPrefab, Vector2Int mapSeed, int sizeInChunks = 10, int chunkSize = 16,
+        int chunkHeight = 100, int waterThreshold = 10)
+    {
+        SizeInChunks = sizeInChunks;
+        ChunkSize = chunkSize;
+        ChunkHeight = chunkHeight;
+        WaterThreshold = waterThreshold;
+        ChunkPrefab = chunkPrefab;
+        MapSeed = mapSeed;
+    }
+    
     public void GenerateWorld()
     {
-        GameObject world = GameObject.FindWithTag("World");
+        GameObject worldObj = new GameObject("World");
         
         chunks.Clear();
         foreach (var chunk in chunkRenderers.Values)
-            Destroy(chunk.gameObject);
+            Object.Destroy(chunk.gameObject);
         chunkRenderers.Clear();
-        for (int x = 0; x < MapSizeInChunks; x++)
+        for (int x = 0; x < SizeInChunks; x++)
         {
-            for (int y = 0; y < MapSizeInChunks; y++)
+            for (int y = 0; y < SizeInChunks; y++)
             {
                 Chunk data = new Chunk(ChunkSize, ChunkHeight, this,
                     new Vector3Int(x * ChunkSize, 0, y * ChunkSize));
-                data.GenerateChunk(MapSeedOffset, WaterThreshold);
+                data.GenerateChunk(MapSeed, WaterThreshold);
                 chunks.Add(data.WorldPosition, data);
             }
         }
 
         foreach (var chunk in chunks.Values)
         {
-            GameObject chunkObject = Instantiate(ChunkPrefab, chunk.WorldPosition, Quaternion.identity);
-            chunkObject.transform.parent = world.transform;
+            GameObject chunkObject = Object.Instantiate(ChunkPrefab, chunk.WorldPosition, Quaternion.identity);
+            chunkObject.transform.parent = worldObj.transform;
             ChunkRenderer chunkRenderer = chunkObject.GetComponent<ChunkRenderer>();
             chunkRenderers.Add(chunk.WorldPosition, chunkRenderer);
             chunkRenderer.InitChunk(chunk);
@@ -60,5 +73,11 @@ public class World : MonoBehaviour
             Mathf.FloorToInt(globalPosition.z / (float)ChunkSize) * ChunkSize);
         chunks.TryGetValue(chunkStartPos, out Chunk chunk);
         return chunk;
+    }
+
+    public void LoadAdditionalChunksRequest(Player player)
+    {
+        Debug.Log("Load more chunks");
+        GameManager.OnNewChunksGenerated?.Invoke();
     }
 }
