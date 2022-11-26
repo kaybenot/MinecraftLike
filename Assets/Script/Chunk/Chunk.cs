@@ -73,6 +73,28 @@ public class Chunk
             globalPosition.z - WorldPosition.z);
     }
 
+    public bool IsOnEdge(Vector3Int globalPosition)
+    {
+        Vector3Int localPos = GetLocalPosition(globalPosition);
+        return localPos.x == 0 || localPos.x == ChunkSize - 1 || localPos.y == 0 || localPos.y == ChunkHeight - 1 ||
+               localPos.z == 0 || localPos.z == ChunkSize - 1;
+    }
+
+    public IEnumerable<Chunk> GetEdgeNeighbourChunk(Vector3Int globalPosition)
+    {
+        List<Chunk> neighboursToUpdate = new List<Chunk>();
+        var localPos = GetLocalPosition(globalPosition);
+        if(localPos.x == 0)
+            neighboursToUpdate.Add(GameManager.World.GetChunk(globalPosition + Vector3Int.left));
+        else if(localPos.x == ChunkSize - 1)
+            neighboursToUpdate.Add(GameManager.World.GetChunk(globalPosition + Vector3Int.right));
+        else if(localPos.z == 0)
+            neighboursToUpdate.Add(GameManager.World.GetChunk(globalPosition + Vector3Int.back));
+        else if(localPos.z == ChunkSize - 1)
+            neighboursToUpdate.Add(GameManager.World.GetChunk(globalPosition + Vector3Int.forward));
+        return neighboursToUpdate;
+    }
+
     private void processChunkColumn(Vector2Int mapSeedOffset, int x, int z, int waterThreshold)
     {
         GameManager.CustomNoiseSettings.WorldOffset = mapSeedOffset;

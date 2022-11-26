@@ -68,9 +68,23 @@ public class World
         var renderer = hit.transform.GetComponent<ChunkRenderer>();
         if (renderer == null)
             return false;
+        var chunk = renderer.Chunk;
         var pos = getBlockPos(hit);
         SetBlock(pos, blockType);
-        renderer.Chunk.ModifiedByPlayer = true;
+        chunk.ModifiedByPlayer = true;
+
+        if (chunk.IsOnEdge(pos))
+        {
+            IEnumerable<Chunk> neighbourChunks = chunk.GetEdgeNeighbourChunk(pos);
+            foreach (var neigbourChunk in neighbourChunks)
+            {
+                neigbourChunk.ModifiedByPlayer = true;
+                ChunkRenderer chunkToUpdate = GetChunkRenderer(neigbourChunk.WorldPosition);
+                if(chunkToUpdate != null)
+                    chunkToUpdate.UpdateChunk();
+            }
+        }
+        
         renderer.UpdateChunk();
         return true;
     }
@@ -109,6 +123,11 @@ public class World
         return chunk;
     }
 
+    public ChunkRenderer GetChunkRenderer(Vector3Int globalPosition)
+    {
+        return chunkRenderers.ContainsKey(globalPosition) ? chunkRenderers[globalPosition] : null;
+    }
+    
     public void LoadAdditionalChunksRequest(Player player)
     {
         generateWorld(player.BlockPosition);
