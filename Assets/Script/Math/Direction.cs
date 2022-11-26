@@ -15,6 +15,9 @@ public enum Direction
 
 public static class DirectionExtensions
 {
+    /// <summary>
+    /// Converts Direction to Vector3Int.
+    /// </summary>
     public static Vector3Int GetVector(this Direction direction)
     {
         return direction switch
@@ -29,6 +32,9 @@ public static class DirectionExtensions
         };
     }
 
+    /// <summary>
+    /// Lists all directions.
+    /// </summary>
     public static Direction[] ListDirections()
     {
         Direction[] directions =

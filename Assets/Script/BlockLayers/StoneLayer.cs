@@ -19,7 +19,7 @@ public class StoneLayer : BlockLayer
 
         int endPosition = surfaceHeightNoise;
         if (chunk.WorldPosition.y < 0)
-            endPosition = chunk.WorldPosition.y + chunk.ChunkHeight;
+            endPosition = chunk.WorldPosition.y + chunk.Height;
 
         if (stoneNoise > stoneThreshold)
         {

@@ -6,13 +6,14 @@ public class Block
 {
     private static Dictionary<BlockType, BlockData> BlockDatas = new Dictionary<BlockType, BlockData>();
     
-    public Vector3Int Location { get; }
+    public Vector3Int GlobalPosition { get; }
     public BlockType BlockType { get; set; }
     public BlockData BlockData => BlockDatas[BlockType];
+    public Chunk Chunk => GameManager.World.GetChunk(GlobalPosition);
 
-    public Block(Vector3Int location, BlockType blockType)
+    public Block(Vector3Int globalPosition, BlockType blockType)
     {
-        Location = location;
+        GlobalPosition = globalPosition;
         BlockType = blockType;
     }
     

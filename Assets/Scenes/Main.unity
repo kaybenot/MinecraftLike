@@ -401,7 +401,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1161349290}
   - component: {fileID: 1161349295}
-  - component: {fileID: 1161349297}
   - component: {fileID: 1161349291}
   - component: {fileID: 1161349292}
   - component: {fileID: 1161349293}
@@ -500,7 +499,7 @@ MonoBehaviour:
   AdditionalLayers:
   - {fileID: 1161349296}
   UseDomainWarping: 1
-  DomainWarping: {fileID: 1161349297}
+  DomainWarping: {fileID: 11400000, guid: 3dbbbd9837f761343a64f11c46baba00, type: 2}
 --- !u!114 &1161349296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,23 +515,7 @@ MonoBehaviour:
   next: {fileID: 0}
   stoneThreshold: 0.5
   stoneNoiseSettings: {fileID: 11400000, guid: c172bdf551c6e8543a2f01ab37be4e08, type: 2}
-  DomainWarping: {fileID: 1161349297}
---- !u!114 &1161349297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1161349289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67251259f917e524d896f47278030240, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  noiseDomainX: {fileID: 11400000, guid: f489e079faf19aa439b603f3a73d86cf, type: 2}
-  noiseDomainY: {fileID: 11400000, guid: 9fb3d835e13052549b47eacdc74b9f89, type: 2}
-  amplitudeX: 80
-  amplitudeY: 80
+  DomainWarping: {fileID: 11400000, guid: 3dbbbd9837f761343a64f11c46baba00, type: 2}
 --- !u!1 &1341329653
 GameObject:
   m_ObjectHideFlags: 0

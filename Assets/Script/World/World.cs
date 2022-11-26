@@ -19,11 +19,16 @@ public class World
     public int RenderDistance { get; }
     public int ChunkSize { get; }
     public int ChunkHeight { get; }
-    public int WaterThreshold { get; }
     public GameObject ChunkPrefab { get; }
     public Vector2Int MapSeed { get; }
 
+    /// <summary>
+    /// Dictionary of chunks bound with position.
+    /// </summary>
     private Dictionary<Vector3Int, Chunk> chunks = new Dictionary<Vector3Int, Chunk>();
+    /// <summary>
+    /// Dictionary of chunk renderers bound with position.
+    /// </summary>
     private Dictionary<Vector3Int, ChunkRenderer> chunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
 
     private static GameObject worldObj;
@@ -34,7 +39,6 @@ public class World
         RenderDistance = renderDistance;
         ChunkSize = chunkSize;
         ChunkHeight = chunkHeight;
-        WaterThreshold = waterThreshold;
         ChunkPrefab = chunkPrefab;
         MapSeed = mapSeed;
     }
@@ -75,36 +79,18 @@ public class World
 
         if (chunk.IsOnEdge(pos))
         {
-            IEnumerable<Chunk> neighbourChunks = chunk.GetEdgeNeighbourChunk(pos);
+            IEnumerable<Chunk> neighbourChunks = chunk.GetTouchedChunks(pos);
             foreach (var neigbourChunk in neighbourChunks)
             {
                 neigbourChunk.ModifiedByPlayer = true;
-                ChunkRenderer chunkToUpdate = GetChunkRenderer(neigbourChunk.WorldPosition);
-                if(chunkToUpdate != null)
-                    chunkToUpdate.UpdateChunk();
+                GetChunkRenderer(neigbourChunk.WorldPosition)?.UpdateMesh();
             }
         }
         
-        renderer.UpdateChunk();
+        renderer.UpdateMesh();
         return true;
     }
-
-    private Vector3Int getBlockPos(RaycastHit hit)
-    {
-        var pos = new Vector3(
-            GetBlockPositionIn(hit.point.x, hit.normal.x),
-            GetBlockPositionIn(hit.point.y, hit.normal.y),
-            GetBlockPositionIn(hit.point.z, hit.normal.z));
-        return Vector3Int.RoundToInt(pos);
-    }
-
-    private float GetBlockPositionIn(float pos, float normal)
-    {
-        if (Math.Abs(Mathf.Abs(pos % 1) - 0.5f) < 0.001f)
-            pos -= (normal / 2);
-        return pos;
-    }
-
+    
     public Vector3Int GetChunkPosition(Vector3Int globalPosition)
     {
         return new Vector3Int(
@@ -134,6 +120,22 @@ public class World
         GameManager.OnNewChunksGenerated?.Invoke();
     }
     
+    private Vector3Int getBlockPos(RaycastHit hit)
+    {
+        var pos = new Vector3(
+            GetBlockPositionIn(hit.point.x, hit.normal.x),
+            GetBlockPositionIn(hit.point.y, hit.normal.y),
+            GetBlockPositionIn(hit.point.z, hit.normal.z));
+        return Vector3Int.RoundToInt(pos);
+    }
+
+    private float GetBlockPositionIn(float pos, float normal)
+    {
+        if (Math.Abs(Mathf.Abs(pos % 1) - 0.5f) < 0.001f)
+            pos -= (normal / 2);
+        return pos;
+    }
+    
     private void generateWorld(Vector3Int position)
     {
         if(worldObj == null)
@@ -148,8 +150,8 @@ public class World
         
         foreach (var pos in worldGenData.chunkDataToCreate)
         {
-            Chunk chunk = new Chunk(ChunkSize, ChunkHeight, this, pos);
-            chunk.GenerateChunk(MapSeed, WaterThreshold);
+            Chunk chunk = new Chunk(ChunkSize, ChunkHeight, pos);
+            chunk.GenerateChunk(MapSeed);
             chunks.Add(pos, chunk);
         }
         foreach (var pos in worldGenData.chunksToCreate)
@@ -160,8 +162,8 @@ public class World
             chunkObj.transform.parent = worldObj.transform;
             ChunkRenderer chunkRenderer = chunkObj.GetComponent<ChunkRenderer>();
             chunkRenderers.Add(pos, chunkRenderer);
-            chunkRenderer.InitChunk(chunk);
-            chunkRenderer.UpdateChunk(mesh);
+            chunkRenderer.BindChunk(chunk);
+            chunkRenderer.UpdateMesh(mesh);
         }
     }
 
@@ -181,7 +183,7 @@ public class World
 
     private List<Vector3Int> getChunkPositionsAroundPlayer(Vector3Int playerPos)
     {
-        List<Vector3Int> chunks = new List<Vector3Int>();
+        List<Vector3Int> chunksAround = new List<Vector3Int>();
 
         int startX = playerPos.x - RenderDistance * ChunkSize;
         int startZ = playerPos.z - RenderDistance * ChunkSize;
@@ -193,16 +195,16 @@ public class World
             for (int z = startZ; z <= endZ; z += ChunkSize)
             {
                 var chunkPos = GetChunkPosition(new Vector3Int(x, 0, z));
-                chunks.Add(chunkPos);
+                chunksAround.Add(chunkPos);
             }
         }
         
-        return chunks;
+        return chunksAround;
     }
     
     private List<Vector3Int> getChunkDataAroundPlayer(Vector3Int playerPos)
     {
-        List<Vector3Int> chunks = new List<Vector3Int>();
+        List<Vector3Int> chunksAround = new List<Vector3Int>();
 
         int startX = playerPos.x - (RenderDistance + 1) * ChunkSize;
         int startZ = playerPos.z - (RenderDistance + 1) * ChunkSize;
@@ -214,14 +216,14 @@ public class World
             for (int z = startZ; z <= endZ; z += ChunkSize)
             {
                 var chunkPos = GetChunkPosition(new Vector3Int(x, 0, z));
-                chunks.Add(chunkPos);
+                chunksAround.Add(chunkPos);
             }
         }
         
-        return chunks;
+        return chunksAround;
     }
     
-    private List<Vector3Int> selectNewChunkData(Vector3Int playerPos, List<Vector3Int> chunkDataAroundPlayer)
+    private List<Vector3Int> selectNewChunkData(Vector3Int playerPos, IEnumerable<Vector3Int> chunkDataAroundPlayer)
     {
         return chunkDataAroundPlayer
             .Where(pos => !chunks.ContainsKey(pos))
@@ -229,7 +231,7 @@ public class World
             .ToList();
     }
 
-    private List<Vector3Int> selectChunksToCreate(Vector3Int playerPos, List<Vector3Int> chunksAroundPlayer)
+    private List<Vector3Int> selectChunksToCreate(Vector3Int playerPos, IEnumerable<Vector3Int> chunksAroundPlayer)
     {
         return chunksAroundPlayer
             .Where(pos => !chunkRenderers.ContainsKey(pos))
@@ -237,19 +239,22 @@ public class World
             .ToList();
     }
 
-    private List<Vector3Int> getRedundantChunks(List<Vector3Int> chunkDataAroundPlayer)
+    /// <summary>
+    /// Lists chunk renderer positions not in draw distance.
+    /// </summary>
+    /// <param name="chunkDataAroundPlayer">Chunks currently around player</param>
+    /// <returns>Chunk renderers loaded but not around player</returns>
+    private List<Vector3Int> getRedundantChunks(ICollection<Vector3Int> chunkDataAroundPlayer)
     {
-        List<Vector3Int> chunks = new List<Vector3Int>();
-        foreach (var pos in chunkRenderers.Keys.Where(pos => !chunkDataAroundPlayer.Contains(pos)))
-        {
-            if(chunkRenderers.ContainsKey(pos))
-                chunks.Add(pos);
-        }
-
-        return chunks;
+        return chunkRenderers.Keys.Where(pos => !chunkDataAroundPlayer.Contains(pos)).Where(pos => chunkRenderers.ContainsKey(pos)).ToList();
     }
     
-    private List<Vector3Int> getRedundantChunkData(List<Vector3Int> chunkDataAroundPlayer)
+    /// <summary>
+    /// Lists chunks positions not in draw distance. (+1 to properly handle edges).
+    /// </summary>
+    /// <param name="chunkDataAroundPlayer">Chunks currently around player</param>
+    /// <returns>Chunk positions loaded but not around player</returns>
+    private List<Vector3Int> getRedundantChunkData(ICollection<Vector3Int> chunkDataAroundPlayer)
     {
         return chunks.Keys.Where(pos => !chunkDataAroundPlayer.Contains(pos)).ToList();
     }

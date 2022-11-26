@@ -25,20 +25,6 @@ public class Player : MonoBehaviour
     public Action OnPlace { get; set; }
     public Vector3Int BlockPosition => Vector3Int.RoundToInt(transform.position);
     public Vector3Int ChunkPosition => GameManager.World.GetChunk(BlockPosition).WorldPosition;
-    public Vector3 Position => transform.position;
-
-    public Vector3Int ChunkCenter
-    {
-        get
-        {
-            var pos = GameManager.World.GetChunk(BlockPosition).WorldPosition;
-            return new Vector3Int(
-                pos.x + GameManager.World.ChunkSize / 2,
-                0,
-                pos.z + GameManager.World.ChunkSize / 2);
-        }
-    }
-        
 
     private Rigidbody rb;
     private Camera cam;

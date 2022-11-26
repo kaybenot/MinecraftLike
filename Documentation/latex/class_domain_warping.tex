@@ -1,0 +1,69 @@
+\hypertarget{class_domain_warping}{}\doxysection{Domain\+Warping Class Reference}
+\label{class_domain_warping}\index{DomainWarping@{DomainWarping}}
+Inheritance diagram for Domain\+Warping\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_domain_warping}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{class_domain_warping_a3552b0efd6248df429a9608b6a274c54}{Generate\+Domain\+Noise}} (int x, int z, \mbox{\hyperlink{class_custom_noise_settings}{Custom\+Noise\+Settings}} noise\+Settings)
+\begin{DoxyCompactList}\small\item\em Applies domain warping to noise.  \end{DoxyCompactList}\item 
+Vector2 \mbox{\hyperlink{class_domain_warping_a036c1d9fef26ce03c749a34c41f36c0e}{Generate\+Domain\+Offset}} (int x, int z)
+\begin{DoxyCompactList}\small\item\em Creates offset used to warp noise.  \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_domain_warping_ab211efd503caa7508a8da4a5816042b7}\label{class_domain_warping_ab211efd503caa7508a8da4a5816042b7}} 
+\mbox{\hyperlink{class_custom_noise_settings}{Custom\+Noise\+Settings}} {\bfseries Noise\+DomainX}
+\begin{DoxyCompactList}\small\item\em Noise used for creating offsets.  \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_domain_warping_a0540391e5795d8ab0857f56efdfcb8b8}\label{class_domain_warping_a0540391e5795d8ab0857f56efdfcb8b8}} 
+\mbox{\hyperlink{class_custom_noise_settings}{Custom\+Noise\+Settings}} {\bfseries Noise\+DomainY}
+\item 
+\mbox{\Hypertarget{class_domain_warping_ac008d401ffa47d9a6de3b19b84478ae7}\label{class_domain_warping_ac008d401ffa47d9a6de3b19b84478ae7}} 
+int {\bfseries AmplitudeX} = 20
+\begin{DoxyCompactList}\small\item\em Amplitudes creating warping effect. Increasing amplitude increases warp effect.  \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_domain_warping_a41be30230a794b11163327c4e06e3095}\label{class_domain_warping_a41be30230a794b11163327c4e06e3095}} 
+int {\bfseries AmplitudeY} = 20
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_domain_warping_a3552b0efd6248df429a9608b6a274c54}\label{class_domain_warping_a3552b0efd6248df429a9608b6a274c54}} 
+\index{DomainWarping@{DomainWarping}!GenerateDomainNoise@{GenerateDomainNoise}}
+\index{GenerateDomainNoise@{GenerateDomainNoise}!DomainWarping@{DomainWarping}}
+\doxysubsubsection{\texorpdfstring{GenerateDomainNoise()}{GenerateDomainNoise()}}
+{\footnotesize\ttfamily float Domain\+Warping.\+Generate\+Domain\+Noise (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{z,  }\item[{\mbox{\hyperlink{class_custom_noise_settings}{Custom\+Noise\+Settings}}}]{noise\+Settings }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Applies domain warping to noise.  
+
+
+\begin{DoxyParams}{Parameters}
+{\em noise\+Settings} & Noise to warp\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Warped noise
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_domain_warping_a036c1d9fef26ce03c749a34c41f36c0e}\label{class_domain_warping_a036c1d9fef26ce03c749a34c41f36c0e}} 
+\index{DomainWarping@{DomainWarping}!GenerateDomainOffset@{GenerateDomainOffset}}
+\index{GenerateDomainOffset@{GenerateDomainOffset}!DomainWarping@{DomainWarping}}
+\doxysubsubsection{\texorpdfstring{GenerateDomainOffset()}{GenerateDomainOffset()}}
+{\footnotesize\ttfamily Vector2 Domain\+Warping.\+Generate\+Domain\+Offset (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{z }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates offset used to warp noise.  
+
+\begin{DoxyReturn}{Returns}
+Domain offset
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Assets/\+Script/\+Math/Domain\+Warping.\+cs\end{DoxyCompactItemize}

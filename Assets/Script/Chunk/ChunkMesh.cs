@@ -25,14 +25,20 @@ public class ChunkMesh
         ColliderTriangles = new List<int>();
     }
 
-    public void AddBlock(Chunk chunk, Block block)
+    /// <summary>
+    /// Tries adding mesh data based on block.
+    /// To properly process chunk, method should be called for every chunk block.
+    /// </summary>
+    /// <param name="chunk">Block chunk</param>
+    /// <param name="block">Processed block</param>
+    public void TryAddBlock(Chunk chunk, Block block)
     {
         if (block.BlockType == BlockType.Air)
             return;
-        
+
         foreach (Direction dir in DirectionExtensions.ListDirections())
         {
-            var neighbourBlockCoords = block.Location + dir.GetVector();
+            var neighbourBlockCoords = block.GlobalPosition + dir.GetVector();
             var neighbourBlock = chunk.GetBlock(neighbourBlockCoords);
             
             if (neighbourBlock != null &&
@@ -51,8 +57,8 @@ public class ChunkMesh
     
     private void addBlockFace(Direction direction, Block block)
     {
-        var location = block.Location;
-        addFaceVertices(direction, location.x, location.y, location.z, block);
+        var pos = block.GlobalPosition;
+        addFaceVertices(direction, pos.x, pos.y, pos.z, block);
         addQuadTriangles(block);
         addFaceUV(direction, block);
     }

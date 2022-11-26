@@ -8,8 +8,14 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 public class ChunkRenderer : MonoBehaviour
 {
+    /// <summary>
+    /// Shows chunk gizmo to better visualise its bounds.
+    /// </summary>
     public bool ShowGizmo = false;
     
+    /// <summary>
+    /// Chunk bound to renderer.
+    /// </summary>
     public Chunk Chunk { get; private set; }
 
     private MeshFilter meshFilter;
@@ -23,11 +29,32 @@ public class ChunkRenderer : MonoBehaviour
         mesh = meshFilter.mesh;
     }
 
-    public void InitChunk(Chunk chunk)
+    /// <summary>
+    /// Binds chunk with renderer.
+    /// </summary>
+    /// <param name="chunk">Chunk to be bound</param>
+    public void BindChunk(Chunk chunk)
     {
         Chunk = chunk;
     }
 
+    /// <summary>
+    /// Generates chunk mesh and updates renderer with it.
+    /// </summary>
+    public void UpdateMesh()
+    {
+        renderMesh(Chunk.GetChunkMesh());
+    }
+
+    /// <summary>
+    /// Updates renderer with given chunk mesh.
+    /// </summary>
+    /// <param name="chunkMesh">Previously generated mesh</param>
+    public void UpdateMesh(ChunkMesh chunkMesh)
+    {
+        renderMesh(chunkMesh);
+    }
+    
     private void renderMesh(ChunkMesh chunkMesh)
     {
         mesh.Clear();
@@ -46,17 +73,7 @@ public class ChunkRenderer : MonoBehaviour
         collisionMesh.RecalculateNormals();
         meshCollider.sharedMesh = collisionMesh;
     }
-
-    public void UpdateChunk()
-    {
-        renderMesh(Chunk.GetChunkMesh());
-    }
-
-    public void UpdateChunk(ChunkMesh data)
-    {
-        renderMesh(data);
-    }
-
+    
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
@@ -64,9 +81,9 @@ public class ChunkRenderer : MonoBehaviour
             if (Application.isPlaying && Chunk != null)
             {
                 Gizmos.color = Selection.activeObject == gameObject ? new Color(0f, 1f, 0f, 0.4f) : new Color(1f, 0f, 1f, 0.4f);
-                Gizmos.DrawCube(transform.position + new Vector3(Chunk.ChunkSize / 2f,
-                                    Chunk.ChunkHeight / 2f, Chunk.ChunkSize / 2f), new Vector3(Chunk.ChunkSize,
-                    Chunk.ChunkHeight, Chunk.ChunkSize));
+                Gizmos.DrawCube(transform.position + new Vector3(Chunk.Size / 2f,
+                                    Chunk.Height / 2f, Chunk.Size / 2f), new Vector3(Chunk.Size,
+                    Chunk.Height, Chunk.Size));
             }
     }
 #endif

@@ -1,0 +1,171 @@
+\hypertarget{class_chunk}{}\doxysection{Chunk Class Reference}
+\label{class_chunk}\index{Chunk@{Chunk}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_chunk_a7b427da728f2cc1cd0ceca0165206551}\label{class_chunk_a7b427da728f2cc1cd0ceca0165206551}} 
+{\bfseries Chunk} (int size, int height, Vector3\+Int world\+Position)
+\item 
+void \mbox{\hyperlink{class_chunk_ab71f6665ba2f66ffaa1e05e6da769361}{Generate\+Chunk}} (Vector2\+Int map\+Seed\+Offset)
+\begin{DoxyCompactList}\small\item\em Generates chunk.  \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_chunk_mesh}{Chunk\+Mesh}} \mbox{\hyperlink{class_chunk_a62aae8c7be3ffbfd6f3f71534a5873fc}{Get\+Chunk\+Mesh}} ()
+\begin{DoxyCompactList}\small\item\em Generates mesh based on current chunk data.  \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_chunk_af4a38c5e5395efba2ba0962c9fc68475}{Set\+Block}} (Vector3\+Int local\+Position, Block\+Type block\+Type)
+\begin{DoxyCompactList}\small\item\em Sets block to specific type.  \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_block}{Block}} \mbox{\hyperlink{class_chunk_a31d9b8a6f7a928eac141349cd1b40b8d}{Get\+Block}} (Vector3\+Int local\+Position)
+\begin{DoxyCompactList}\small\item\em Gets block at local position.  \end{DoxyCompactList}\item 
+Vector3\+Int \mbox{\hyperlink{class_chunk_afbf176a2cf9332b588e280d0b3ce8ccd}{Get\+Local\+Position}} (Vector3\+Int global\+Position)
+\begin{DoxyCompactList}\small\item\em Converts global position to chunk position.  \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_chunk_a449df14567b510246546a2dad5d56cf6}{Is\+On\+Edge}} (Vector3\+Int global\+Position)
+\begin{DoxyCompactList}\small\item\em Checks if block is on edge.  \end{DoxyCompactList}\item 
+IEnumerable$<$ \mbox{\hyperlink{class_chunk}{Chunk}} $>$ \mbox{\hyperlink{class_chunk_ad2dbe435f98eda3503cee53c88c6cbae}{Get\+Touched\+Chunks}} (Vector3\+Int global\+Position)
+\begin{DoxyCompactList}\small\item\em List all chunks touched by block.  \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_chunk_a617aa846ea2a91114e6e1e38b280830a}\label{class_chunk_a617aa846ea2a91114e6e1e38b280830a}} 
+\mbox{\hyperlink{class_block}{Block}}\mbox{[},,\mbox{]} {\bfseries Blocks}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_chunk_ad8b13b4f360bc99ea8a3082f6cdb907f}\label{class_chunk_ad8b13b4f360bc99ea8a3082f6cdb907f}} 
+int {\bfseries Size}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_chunk_a2b38e9ea2e45fba1132a874c640e963c}\label{class_chunk_a2b38e9ea2e45fba1132a874c640e963c}} 
+int {\bfseries Height}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_chunk_ad6963602a9ce03c5da119b9c3c71e85a}\label{class_chunk_ad6963602a9ce03c5da119b9c3c71e85a}} 
+\mbox{\hyperlink{class_world}{World}} {\bfseries World}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_chunk_afe594fef38be6b40508013e63d0a3d8c}\label{class_chunk_afe594fef38be6b40508013e63d0a3d8c}} 
+Vector3\+Int {\bfseries World\+Position}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_chunk_a819317d3b3222ebe9515166fc24628bf}\label{class_chunk_a819317d3b3222ebe9515166fc24628bf}} 
+\mbox{\hyperlink{class_biome}{Biome}} {\bfseries Biome}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_chunk_a6af3ac45e4ea45d152ada6091059507c}\label{class_chunk_a6af3ac45e4ea45d152ada6091059507c}} 
+bool {\bfseries Modified\+By\+Player}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_chunk_ab71f6665ba2f66ffaa1e05e6da769361}\label{class_chunk_ab71f6665ba2f66ffaa1e05e6da769361}} 
+\index{Chunk@{Chunk}!GenerateChunk@{GenerateChunk}}
+\index{GenerateChunk@{GenerateChunk}!Chunk@{Chunk}}
+\doxysubsubsection{\texorpdfstring{GenerateChunk()}{GenerateChunk()}}
+{\footnotesize\ttfamily void Chunk.\+Generate\+Chunk (\begin{DoxyParamCaption}\item[{Vector2\+Int}]{map\+Seed\+Offset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Generates chunk.  
+
+
+\begin{DoxyParams}{Parameters}
+{\em map\+Seed\+Offset} & Map seed\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_chunk_a31d9b8a6f7a928eac141349cd1b40b8d}\label{class_chunk_a31d9b8a6f7a928eac141349cd1b40b8d}} 
+\index{Chunk@{Chunk}!GetBlock@{GetBlock}}
+\index{GetBlock@{GetBlock}!Chunk@{Chunk}}
+\doxysubsubsection{\texorpdfstring{GetBlock()}{GetBlock()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_block}{Block}} Chunk.\+Get\+Block (\begin{DoxyParamCaption}\item[{Vector3\+Int}]{local\+Position }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Gets block at local position.  
+
+
+\begin{DoxyParams}{Parameters}
+{\em local\+Position} & Local position\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_block}{Block}}
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_chunk_a62aae8c7be3ffbfd6f3f71534a5873fc}\label{class_chunk_a62aae8c7be3ffbfd6f3f71534a5873fc}} 
+\index{Chunk@{Chunk}!GetChunkMesh@{GetChunkMesh}}
+\index{GetChunkMesh@{GetChunkMesh}!Chunk@{Chunk}}
+\doxysubsubsection{\texorpdfstring{GetChunkMesh()}{GetChunkMesh()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_chunk_mesh}{Chunk\+Mesh}} Chunk.\+Get\+Chunk\+Mesh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Generates mesh based on current chunk data.  
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_chunk}{Chunk}} mesh.
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_chunk_afbf176a2cf9332b588e280d0b3ce8ccd}\label{class_chunk_afbf176a2cf9332b588e280d0b3ce8ccd}} 
+\index{Chunk@{Chunk}!GetLocalPosition@{GetLocalPosition}}
+\index{GetLocalPosition@{GetLocalPosition}!Chunk@{Chunk}}
+\doxysubsubsection{\texorpdfstring{GetLocalPosition()}{GetLocalPosition()}}
+{\footnotesize\ttfamily Vector3\+Int Chunk.\+Get\+Local\+Position (\begin{DoxyParamCaption}\item[{Vector3\+Int}]{global\+Position }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Converts global position to chunk position.  
+
+
+\begin{DoxyParams}{Parameters}
+{\em global\+Position} & Global position\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Local position
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_chunk_ad2dbe435f98eda3503cee53c88c6cbae}\label{class_chunk_ad2dbe435f98eda3503cee53c88c6cbae}} 
+\index{Chunk@{Chunk}!GetTouchedChunks@{GetTouchedChunks}}
+\index{GetTouchedChunks@{GetTouchedChunks}!Chunk@{Chunk}}
+\doxysubsubsection{\texorpdfstring{GetTouchedChunks()}{GetTouchedChunks()}}
+{\footnotesize\ttfamily IEnumerable$<$ \mbox{\hyperlink{class_chunk}{Chunk}} $>$ Chunk.\+Get\+Touched\+Chunks (\begin{DoxyParamCaption}\item[{Vector3\+Int}]{global\+Position }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+List all chunks touched by block.  
+
+
+\begin{DoxyParams}{Parameters}
+{\em global\+Position} & \mbox{\hyperlink{class_block}{Block}} global position\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Chunks that blocks touches
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_chunk_a449df14567b510246546a2dad5d56cf6}\label{class_chunk_a449df14567b510246546a2dad5d56cf6}} 
+\index{Chunk@{Chunk}!IsOnEdge@{IsOnEdge}}
+\index{IsOnEdge@{IsOnEdge}!Chunk@{Chunk}}
+\doxysubsubsection{\texorpdfstring{IsOnEdge()}{IsOnEdge()}}
+{\footnotesize\ttfamily bool Chunk.\+Is\+On\+Edge (\begin{DoxyParamCaption}\item[{Vector3\+Int}]{global\+Position }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks if block is on edge.  
+
+
+\begin{DoxyParams}{Parameters}
+{\em global\+Position} & \mbox{\hyperlink{class_block}{Block}} global position\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True/\+False
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_chunk_af4a38c5e5395efba2ba0962c9fc68475}\label{class_chunk_af4a38c5e5395efba2ba0962c9fc68475}} 
+\index{Chunk@{Chunk}!SetBlock@{SetBlock}}
+\index{SetBlock@{SetBlock}!Chunk@{Chunk}}
+\doxysubsubsection{\texorpdfstring{SetBlock()}{SetBlock()}}
+{\footnotesize\ttfamily void Chunk.\+Set\+Block (\begin{DoxyParamCaption}\item[{Vector3\+Int}]{local\+Position,  }\item[{Block\+Type}]{block\+Type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets block to specific type.  
+
+
+\begin{DoxyParams}{Parameters}
+{\em local\+Position} & \mbox{\hyperlink{class_block}{Block}} position in local position\\
+\hline
+{\em block\+Type} & Type to which block has to be set\\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Assets/\+Script/\+Chunk/Chunk.\+cs\end{DoxyCompactItemize}
