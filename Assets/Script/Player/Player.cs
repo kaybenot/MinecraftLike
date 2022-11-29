@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     private Camera cam;
     private Vector3 inputForce;
     private Animator animator;
+    private Transform collitionTransform;
     private float minGroundDotProduct;
     private static readonly int Walking = Animator.StringToHash("Walking");
 
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
         OnAttack += destroyBlock;
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        collitionTransform = GetComponentInChildren<BoxCollider>().transform;
         cam = Camera.main;
 
         minGroundDotProduct = Mathf.Cos(groundMaxAngle * Mathf.Deg2Rad);
@@ -47,6 +49,7 @@ public class Player : MonoBehaviour
     {
         rb.velocity = inputForce.z * player.forward * speed + 
                       inputForce.x * player.right * speed + Vector3.up * rb.velocity.y;
+        collitionTransform.rotation = Quaternion.identity;
     }
 
     private void OnCollisionExit(Collision collision)

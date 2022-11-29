@@ -593,7 +593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4fc35d92ab6d6f439a1eccfdd042da4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RenderDistance: 10
+  RenderDistance: 4
   ChunkSize: 16
   ChunkHeight: 100
   ChunkPrefab: {fileID: 5911899811142283208, guid: 675235fd7946de64bb303f4f30bd6975,
