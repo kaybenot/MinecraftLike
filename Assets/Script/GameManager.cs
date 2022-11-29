@@ -36,10 +36,10 @@ public class GameManager : MonoBehaviour
         TextureOffset = textureOffset;
         CustomNoiseSettings = customNoiseSettings;
         World = GameObject.FindWithTag("World").GetComponent<World>();
+        Chunk.Biome = GameObject.FindWithTag("PlainsBiome").GetComponent<Biome>();
 
         loadBlockDatas();
-        World.GenerateWorld();
-        spawnPlayer();
+        World.GenerateWorld(spawnPlayer);
     }
 
     private void loadBlockDatas()

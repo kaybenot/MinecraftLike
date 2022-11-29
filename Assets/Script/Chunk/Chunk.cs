@@ -10,7 +10,7 @@ public class Chunk
     public int Height { get; }
     public World World => GameManager.World;
     public Vector3Int WorldPosition { get; }
-    public Biome Biome { get; }
+    public static Biome Biome { get; set; }
     public bool ModifiedByPlayer { get; set; }
     
     public Chunk(int size, int height, Vector3Int worldPosition)
@@ -26,7 +26,6 @@ public class Chunk
         ModifiedByPlayer = false;
         
         // TODO: Implement picking biomes
-        Biome = GameObject.FindWithTag("PlainsBiome").GetComponent<Biome>();
     }
 
     /// <summary>
