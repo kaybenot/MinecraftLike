@@ -560,7 +560,7 @@ MonoBehaviour:
   blockAtlas: {fileID: 11400000, guid: cbc2b047d0226f94d9beb4fc20752cfd, type: 2}
   textureOffset: 0.001
   chunkDetectionTime: 1
-  customNoiseSettings: {fileID: 11400000, guid: 576fbcc7430ca4b48b6067dc1d557f71,
+  customNoiseSettings: {fileID: 11400000, guid: ded9471308226a14f8464dda6c94cfac,
     type: 2}
   playerPrefab: {fileID: 3791526165130123504, guid: 898ff3fb45a41b04985deff2834b6695,
     type: 3}

@@ -38,6 +38,7 @@ public class World : MonoBehaviour
     private Dictionary<Vector3Int, ChunkRenderer> chunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
     
     private CancellationTokenSource tokenSource = new CancellationTokenSource();
+    private Queue<ChunkRenderer> chunkPool = new Queue<ChunkRenderer>();
 
     private void OnDisable()
     {
@@ -121,6 +122,13 @@ public class World : MonoBehaviour
         await generateWorld(player.BlockPosition);
         GameManager.OnNewChunksGenerated?.Invoke();
     }
+
+    public void ClearWorld()
+    {
+        foreach (var chunkRenderer in chunkRenderers.Values)
+            Destroy(chunkRenderer.gameObject);
+        chunkPool.Clear();
+    }
     
     private Vector3Int getBlockPos(RaycastHit hit)
     {
@@ -140,39 +148,59 @@ public class World : MonoBehaviour
     
     private async Task generateWorld(Vector3Int position)
     {
-        WorldGenData worldGenData = await Task.Run(() => getGenerationData(position));
+        WorldGenData worldGenData = await Task.Run(() => getGenerationData(position), tokenSource.Token);
 
-        foreach (var pos in worldGenData.chunksToRemove)
-            removeChunk(pos);
-        foreach (var pos in worldGenData.chunkDataToRemove)
-            removeChunkData(pos);
-
-        ConcurrentDictionary<Vector3Int, Chunk> chunksDict = new ConcurrentDictionary<Vector3Int, Chunk>();
+        List<ChunkRenderer> renderers = new List<ChunkRenderer>();
         await Task.Run(() =>
         {
+            foreach (var pos in worldGenData.chunksToRemove)
+            {
+                if (chunkRenderers.TryGetValue(pos, out ChunkRenderer chunkRenderer))
+                {
+                    renderers.Add(chunkRenderer);
+                    chunkPool.Enqueue(chunkRenderer);
+                    chunkRenderers.Remove(pos);
+                }
+            }
+        });
+        foreach (var r in renderers)
+            r.gameObject.SetActive(false);
+
+        ConcurrentDictionary<Vector3Int, Chunk> chunksDict = new ConcurrentDictionary<Vector3Int, Chunk>();
+        ConcurrentDictionary<Vector3Int, ChunkMesh> chunkMeshDict = new ConcurrentDictionary<Vector3Int, ChunkMesh>();
+        await Task.Run(() =>
+        {
+            foreach (var pos in worldGenData.chunkDataToRemove)
+                chunks.Remove(pos);
+            
             foreach (var pos in worldGenData.chunkDataToCreate)
             {
+                if (tokenSource.Token.IsCancellationRequested)
+                    tokenSource.Token.ThrowIfCancellationRequested();
                 Chunk chunk = new Chunk(ChunkSize, ChunkHeight, pos);
                 chunk.GenerateChunk(MapSeed);
                 chunksDict.TryAdd(pos, chunk);
             }
-        });
-        foreach (var (pos, chunk) in chunksDict)
-            chunks.TryAdd(pos, chunk);
 
-        ConcurrentDictionary<Vector3Int, ChunkMesh> chunkMeshDict = new ConcurrentDictionary<Vector3Int, ChunkMesh>();
-        List<Chunk> toRender = chunks
-            .Where((keyvalpair) => worldGenData.chunksToCreate.Contains(keyvalpair.Key))
-            .Select(keyvalpair => keyvalpair.Value).ToList();
-
-        await Task.Run(() =>
-        {
+            foreach (var (pos, chunk) in chunksDict)
+            {
+                if (tokenSource.Token.IsCancellationRequested)
+                    tokenSource.Token.ThrowIfCancellationRequested();
+                chunks.Add(pos, chunk);
+            }
+            
+            List<Chunk> toRender = chunks
+                .Where((keyvalpair) => worldGenData.chunksToCreate.Contains(keyvalpair.Key))
+                .Select(keyvalpair => keyvalpair.Value).ToList();
+            
             foreach (var chunk in toRender)
             {
+                if(tokenSource.Token.IsCancellationRequested)
+                    tokenSource.Token.ThrowIfCancellationRequested();
                 ChunkMesh mesh = chunk.GetChunkMesh();
                 chunkMeshDict.TryAdd(chunk.WorldPosition, mesh);
             } 
-        });
+        }, tokenSource.Token);
 
         StartCoroutine(chunkCreationCoroutine(chunkMeshDict));
     }
@@ -194,28 +222,31 @@ public class World : MonoBehaviour
 
     private void createChunk(Vector3Int pos, ChunkMesh mesh)
     {
-        GameObject chunkObj = Object.Instantiate(ChunkPrefab, pos, Quaternion.identity);
-        chunkObj.transform.parent = transform;
-        ChunkRenderer chunkRenderer = chunkObj.GetComponent<ChunkRenderer>();
-        chunkRenderers.TryAdd(pos, chunkRenderer);
+        ChunkRenderer chunkRenderer = renderChunk(pos, mesh);
+        chunkRenderers.Add(pos, chunkRenderer);
+    }
+
+    private ChunkRenderer renderChunk(Vector3Int pos, ChunkMesh mesh)
+    {
+        ChunkRenderer chunkRenderer;
+        if (chunkPool.Count > 0)
+        {
+            chunkRenderer = chunkPool.Dequeue();
+            chunkRenderer.transform.position = pos;
+        }
+        else
+        {
+            GameObject chunkObj = Instantiate(ChunkPrefab, pos, Quaternion.identity);
+            chunkRenderer = chunkObj.GetComponent<ChunkRenderer>();
+        }
+        
         chunkRenderer.BindChunk(chunks[pos]);
         chunkRenderer.UpdateMesh(mesh);
-    }
+        chunkRenderer.gameObject.SetActive(true);
 
-    private void removeChunk(Vector3Int pos)
-    {
-        if (chunkRenderers.TryGetValue(pos, out ChunkRenderer chunkRenderer))
-        {
-            chunkRenderer.gameObject.SetActive(false);
-            chunkRenderers.Remove(pos);
-        }
+        return chunkRenderer;
     }
-
-    private void removeChunkData(Vector3Int pos)
-    {
-        chunks.Remove(pos);
-    }
-
+    
     private List<Vector3Int> getChunkPositionsAroundPlayer(Vector3Int playerPos)
     {
         List<Vector3Int> chunksAround = new List<Vector3Int>();

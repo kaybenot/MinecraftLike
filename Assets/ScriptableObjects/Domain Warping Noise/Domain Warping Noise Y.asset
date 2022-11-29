@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 55ec98bc97bc12345af4ce8b93f47eec, type: 3}
   m_Name: Domain Warping Noise Y
-  m_EditorClassIdentifier: Assembly-CSharp::CustomNoiseSettings
+  m_EditorClassIdentifier: 
   NoiseZoom: 0.02
   Octaves: 3
-  Offset: {x: 1000, y: 1400}
+  Offset: {x: 7644, y: 3417}
   WorldOffset: {x: 0, y: 0}
   Persistance: 0.5
   RedistributionModifier: 1.2
