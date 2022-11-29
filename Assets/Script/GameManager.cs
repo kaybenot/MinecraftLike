@@ -11,11 +11,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float textureOffset = 0.001f;
 
     [Header("World settings")]
-    [SerializeField] private int mapSizeInChunks = 6;
-    [SerializeField] private int chunkSize = 16, chunkHeight = 100;
-    [SerializeField] private int waterThreshold = 50;
-    [SerializeField] private GameObject chunkPrefab;
-    [SerializeField] private Vector2Int mapSeedOffset;
     [SerializeField] private float chunkDetectionTime = 1f;
     [SerializeField] private CustomNoiseSettings customNoiseSettings;
 
@@ -40,9 +35,7 @@ public class GameManager : MonoBehaviour
         BlockAtlas = blockAtlas;
         TextureOffset = textureOffset;
         CustomNoiseSettings = customNoiseSettings;
-        World = new World(chunkPrefab, 
-            Vector2Int.zero,
-            mapSizeInChunks, chunkSize, chunkHeight, waterThreshold);
+        World = GameObject.FindWithTag("World").GetComponent<World>();
 
         loadBlockDatas();
         World.GenerateWorld();

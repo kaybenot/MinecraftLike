@@ -14,13 +14,16 @@ struct WorldGenData
     public List<Vector3Int> chunkDataToRemove;
 }
 
-public class World
+public class World : MonoBehaviour
 {
-    public int RenderDistance { get; }
-    public int ChunkSize { get; }
-    public int ChunkHeight { get; }
-    public GameObject ChunkPrefab { get; }
-    public Vector2Int MapSeed { get; }
+    public int RenderDistance = 10;
+    public int ChunkSize = 16;
+    public int ChunkHeight = 100;
+    public GameObject ChunkPrefab;
+    public Vector2Int MapSeed;
+    
+    public bool IsWorldCreated { get; private set; }
+    public Action OnWorldCreated { get; }
 
     /// <summary>
     /// Dictionary of chunks bound with position.
@@ -30,19 +33,7 @@ public class World
     /// Dictionary of chunk renderers bound with position.
     /// </summary>
     private Dictionary<Vector3Int, ChunkRenderer> chunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
-
-    private static GameObject worldObj;
-
-    public World(GameObject chunkPrefab, Vector2Int mapSeed, int renderDistance = 10, int chunkSize = 16,
-        int chunkHeight = 100, int waterThreshold = 10)
-    {
-        RenderDistance = renderDistance;
-        ChunkSize = chunkSize;
-        ChunkHeight = chunkHeight;
-        ChunkPrefab = chunkPrefab;
-        MapSeed = mapSeed;
-    }
-
+    
     public void GenerateWorld()
     {
         generateWorld(Vector3Int.zero);
@@ -138,9 +129,6 @@ public class World
     
     private void generateWorld(Vector3Int position)
     {
-        if(worldObj == null)
-            worldObj = new GameObject("World");
-        
         WorldGenData worldGenData = getGenerationData(position);
 
         foreach (var pos in worldGenData.chunksToRemove)
@@ -154,17 +142,41 @@ public class World
             chunk.GenerateChunk(MapSeed);
             chunks.Add(pos, chunk);
         }
+        
+        Dictionary<Vector3Int, ChunkMesh> chunkMeshDict = new Dictionary<Vector3Int, ChunkMesh>();
         foreach (var pos in worldGenData.chunksToCreate)
         {
             Chunk chunk = chunks[pos];
             ChunkMesh mesh = chunk.GetChunkMesh();
-            GameObject chunkObj = Object.Instantiate(ChunkPrefab, pos, Quaternion.identity);
-            chunkObj.transform.parent = worldObj.transform;
-            ChunkRenderer chunkRenderer = chunkObj.GetComponent<ChunkRenderer>();
-            chunkRenderers.Add(pos, chunkRenderer);
-            chunkRenderer.BindChunk(chunk);
-            chunkRenderer.UpdateMesh(mesh);
+            chunkMeshDict.Add(pos, mesh);
         }
+
+        StartCoroutine(chunkCreationCoroutine(chunkMeshDict));
+    }
+
+    IEnumerator chunkCreationCoroutine(Dictionary<Vector3Int, ChunkMesh> chunkMeshDict)
+    {
+        foreach (var (key, value) in chunkMeshDict)
+        {
+            createChunk(key, value);
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (!IsWorldCreated)
+        {
+            IsWorldCreated = true;
+            OnWorldCreated?.Invoke();
+        }
+    }
+
+    private void createChunk(Vector3Int pos, ChunkMesh mesh)
+    {
+        GameObject chunkObj = Object.Instantiate(ChunkPrefab, pos, Quaternion.identity);
+        chunkObj.transform.parent = transform;
+        ChunkRenderer chunkRenderer = chunkObj.GetComponent<ChunkRenderer>();
+        chunkRenderers.Add(pos, chunkRenderer);
+        chunkRenderer.BindChunk(chunks[pos]);
+        chunkRenderer.UpdateMesh(mesh);
     }
 
     private void removeChunk(Vector3Int pos)
