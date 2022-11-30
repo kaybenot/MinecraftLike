@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67251259f917e524d896f47278030240, type: 3}
+  m_Name: Biome Warping
+  m_EditorClassIdentifier: 
+  NoiseDomainX: {fileID: 11400000, guid: f489e079faf19aa439b603f3a73d86cf, type: 2}
+  NoiseDomainY: {fileID: 11400000, guid: 22ff50c47cbaa8041b4e65e3f046c611, type: 2}
+  AmplitudeX: 32
+  AmplitudeY: 26

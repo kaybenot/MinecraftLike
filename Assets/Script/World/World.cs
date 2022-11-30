@@ -148,6 +148,7 @@ public class World : MonoBehaviour
     
     private async Task generateWorld(Vector3Int position)
     {
+        GameManager.BiomeGenerator.GenerateBiomePoints(MapSeed);
         WorldGenData worldGenData = await Task.Run(() => getGenerationData(position), tokenSource.Token);
 
         List<ChunkRenderer> renderers = new List<ChunkRenderer>();
@@ -248,6 +249,7 @@ public class World : MonoBehaviour
         else
         {
             GameObject chunkObj = Instantiate(ChunkPrefab, pos, Quaternion.identity);
+            chunkObj.transform.parent = GameManager.WorldObj.transform;
             chunkRenderer = chunkObj.GetComponent<ChunkRenderer>();
         }
         

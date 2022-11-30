@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float textureOffset = 0.001f;
 
     [Header("World settings")]
+    [SerializeField] private GameObject worldObj;
     [SerializeField] private float chunkDetectionTime = 1f;
     [SerializeField] private CustomNoiseSettings customNoiseSettings;
 
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour
     public static World World { get; private set; }
     public static Player Player { get; private set; }
     public static Action OnNewChunksGenerated { get; set; }
+    public static GameObject WorldObj { get; private set; }
+    public static BiomeGenerator BiomeGenerator;
 
     private Vector3Int lastChunkPos;
     
@@ -35,6 +38,8 @@ public class GameManager : MonoBehaviour
         BlockAtlas = blockAtlas;
         TextureOffset = textureOffset;
         CustomNoiseSettings = customNoiseSettings;
+        BiomeGenerator = FindObjectOfType<BiomeGenerator>();
+        WorldObj = worldObj;
         World = GameObject.FindWithTag("World").GetComponent<World>();
         Chunk.Biome = GameObject.FindWithTag("PlainsBiome").GetComponent<Biome>();
 

@@ -13,7 +13,7 @@ public class Chunk
     public static Biome Biome { get; set; }
     public bool ModifiedByPlayer { get; set; }
     public TreeData TreeData { get; private set; }
-    
+
     public Chunk(int size, int height, Vector3Int worldPosition)
     {
         Size = size;
@@ -40,7 +40,7 @@ public class Chunk
         for (int z = 0; z < Size; z++)
             generateBlockColumn(mapSeedOffset, x, z);
     }
-    
+
     /// <summary>
     /// Generates mesh based on current chunk data.
     /// </summary>

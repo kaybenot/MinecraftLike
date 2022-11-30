@@ -12,6 +12,7 @@ public class ChunkRenderer : MonoBehaviour
     /// Shows chunk gizmo to better visualise its bounds.
     /// </summary>
     public bool ShowGizmo = false;
+    public bool ShowBiomeCenters = false;
     
     /// <summary>
     /// Chunk bound to renderer.
@@ -77,14 +78,28 @@ public class ChunkRenderer : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if(ShowGizmo)
+        if (ShowGizmo)
+        {
             if (Application.isPlaying && Chunk != null)
             {
-                Gizmos.color = Selection.activeObject == gameObject ? new Color(0f, 1f, 0f, 0.4f) : new Color(1f, 0f, 1f, 0.4f);
+                Gizmos.color = Selection.activeObject == gameObject
+                    ? new Color(0f, 1f, 0f, 0.4f)
+                    : new Color(1f, 0f, 1f, 0.4f);
                 Gizmos.DrawCube(transform.position + new Vector3(Chunk.Size / 2f,
-                                    Chunk.Height / 2f, Chunk.Size / 2f), new Vector3(Chunk.Size,
+                    Chunk.Height / 2f, Chunk.Size / 2f), new Vector3(Chunk.Size,
                     Chunk.Height, Chunk.Size));
             }
+        }
+
+        if (ShowBiomeCenters)
+        {
+            if (Application.isPlaying)
+            {
+                Gizmos.color = Color.blue;
+                foreach (var point in GameManager.BiomeGenerator.BiomeCenters)
+                    Gizmos.DrawLine(point, point + Vector3.up * 255f);
+            }
+        }
     }
 #endif
 }

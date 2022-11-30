@@ -36,4 +36,9 @@ public class DomainWarping : ScriptableObject
         float noiseY = CustomNoise.OctavePerlin(x, z, NoiseDomainY) * AmplitudeY;
         return new Vector2(noiseX, noiseY);
     }
+    
+    public Vector2Int GenerateDomainOffsetInt(int x, int z)
+    {
+        return Vector2Int.RoundToInt(GenerateDomainOffset(x, z));
+    }
 }

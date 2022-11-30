@@ -123,6 +123,114 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &58852148
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 58852149}
+  - component: {fileID: 58852154}
+  - component: {fileID: 58852153}
+  - component: {fileID: 58852152}
+  - component: {fileID: 58852151}
+  - component: {fileID: 58852150}
+  m_Layer: 0
+  m_Name: Desert
+  m_TagString: PlainsBiome
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &58852149
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58852148}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1878635656}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &58852150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58852148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b6f3a46c3524b94ba9e43090ada4182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  next: {fileID: 0}
+  terrainHeightLimit: 25
+--- !u!114 &58852151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58852148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b942c2583746a7d449ff45648032708d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  next: {fileID: 0}
+  undergroundBlockType: 9
+--- !u!114 &58852152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58852148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32dbe244942189141988a763f1a97521, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  next: {fileID: 58852151}
+  surfaceBlockType: 9
+--- !u!114 &58852153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58852148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1302b9752d45f4744966ead6a68fdeff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  next: {fileID: 58852152}
+--- !u!114 &58852154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58852148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c79fe7956a4d944a6bbf306857fbe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartLayer: {fileID: 58852153}
+  AdditionalLayers: []
+  UseDomainWarping: 1
+  DomainWarping: {fileID: 11400000, guid: 3dbbbd9837f761343a64f11c46baba00, type: 2}
+  TreeGenerator: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,6 +699,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockAtlas: {fileID: 11400000, guid: cbc2b047d0226f94d9beb4fc20752cfd, type: 2}
   textureOffset: 0.001
+  worldObj: {fileID: 1667997978}
   chunkDetectionTime: 1
   customNoiseSettings: {fileID: 11400000, guid: ded9471308226a14f8464dda6c94cfac,
     type: 2}
@@ -655,6 +764,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1878635656}
+  - component: {fileID: 1878635657}
   m_Layer: 0
   m_Name: Biomes
   m_TagString: Untagged
@@ -675,9 +785,31 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1161349290}
+  - {fileID: 58852149}
   m_Father: {fileID: 1341329655}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1878635657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878635655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1cc16774be46441afdc945236730a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  biomeWarping: {fileID: 11400000, guid: 5a50c75f99862cf4d97952d027f3e308, type: 2}
+  biomeNoiseSettings: {fileID: 11400000, guid: 45a94c62d4442dd44b07c8898a2eb692, type: 2}
+  biomeDatas:
+  - TemperatureStartThreshold: 0
+    TemperatureEndThreshold: 0.5
+    Biome: {fileID: 1161349295}
+  - TemperatureStartThreshold: 0.5
+    TemperatureEndThreshold: 1
+    Biome: {fileID: 58852154}
 --- !u!1 &2036175610
 GameObject:
   m_ObjectHideFlags: 0

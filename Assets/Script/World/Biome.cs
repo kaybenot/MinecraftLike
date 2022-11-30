@@ -1,6 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+
+[Serializable]
+public struct BiomeData
+{
+    [Range(0f, 1f)] public float TemperatureStartThreshold, TemperatureEndThreshold;
+    public Biome Biome;
+}
 
 public class Biome : MonoBehaviour
 {
@@ -25,7 +34,8 @@ public class Biome : MonoBehaviour
             return new TreeData();;
         return TreeGenerator.GenerateTreeData(chunk, mapSeedOffset);
     }
-
+    
+    
 }
 
 
