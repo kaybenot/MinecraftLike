@@ -12,6 +12,7 @@ public class Chunk
     public Vector3Int WorldPosition { get; }
     public static Biome Biome { get; set; }
     public bool ModifiedByPlayer { get; set; }
+    public TreeData TreeData { get; private set; }
     
     public Chunk(int size, int height, Vector3Int worldPosition)
     {
@@ -34,6 +35,7 @@ public class Chunk
     /// <param name="mapSeedOffset">Map seed</param>
     public void GenerateChunk(Vector2Int mapSeedOffset)
     {
+        TreeData = Biome.GetTreeData(this, mapSeedOffset);
         for (int x = 0; x < Size; x++)
         for (int z = 0; z < Size; z++)
             generateBlockColumn(mapSeedOffset, x, z);
@@ -63,7 +65,7 @@ public class Chunk
         if (inRange(localPosition))
             Blocks[localPosition.x, localPosition.y, localPosition.z].BlockType = blockType;
         else
-            World.GetBlock(WorldPosition + localPosition).BlockType = blockType;
+            World.SetBlock(WorldPosition + localPosition, blockType);
     }
     
     /// <summary>

@@ -17,4 +17,15 @@ public class Biome : MonoBehaviour
     /// Domain warping scriptable object.
     /// </summary>
     public DomainWarping DomainWarping;
+    public TreeGenerator TreeGenerator;
+
+    public TreeData GetTreeData(Chunk chunk, Vector2Int mapSeedOffset)
+    {
+        if (TreeGenerator == null)
+            return new TreeData();;
+        return TreeGenerator.GenerateTreeData(chunk, mapSeedOffset);
+    }
+
 }
+
+

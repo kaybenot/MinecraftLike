@@ -397,11 +397,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1161349290}
   - component: {fileID: 1161349295}
+  - component: {fileID: 1161349297}
   - component: {fileID: 1161349291}
   - component: {fileID: 1161349292}
   - component: {fileID: 1161349293}
   - component: {fileID: 1161349294}
   - component: {fileID: 1161349296}
+  - component: {fileID: 1161349298}
   m_Layer: 0
   m_Name: Plains
   m_TagString: PlainsBiome
@@ -494,8 +496,10 @@ MonoBehaviour:
   StartLayer: {fileID: 1161349291}
   AdditionalLayers:
   - {fileID: 1161349296}
+  - {fileID: 1161349298}
   UseDomainWarping: 1
   DomainWarping: {fileID: 11400000, guid: 3dbbbd9837f761343a64f11c46baba00, type: 2}
+  TreeGenerator: {fileID: 1161349297}
 --- !u!114 &1161349296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,6 +516,34 @@ MonoBehaviour:
   stoneThreshold: 0.5
   stoneNoiseSettings: {fileID: 11400000, guid: c172bdf551c6e8543a2f01ab37be4e08, type: 2}
   DomainWarping: {fileID: 11400000, guid: 3dbbbd9837f761343a64f11c46baba00, type: 2}
+--- !u!114 &1161349297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1161349289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2526d1b999223dc41a6248e9b1c15ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treeNoiseSettings: {fileID: 11400000, guid: a9cb39a0ef934bc40adaad358c2b7ed0, type: 2}
+  DomainWarping: {fileID: 11400000, guid: 3dbbbd9837f761343a64f11c46baba00, type: 2}
+--- !u!114 &1161349298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1161349289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b6f3a46c3524b94ba9e43090ada4182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  next: {fileID: 0}
+  terrainHeightLimit: 25
 --- !u!1 &1341329653
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,7 +625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4fc35d92ab6d6f439a1eccfdd042da4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RenderDistance: 4
+  RenderDistance: 8
   ChunkSize: 16
   ChunkHeight: 100
   ChunkPrefab: {fileID: 5911899811142283208, guid: 675235fd7946de64bb303f4f30bd6975,

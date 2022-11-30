@@ -188,6 +188,11 @@ public class World : MonoBehaviour
                     tokenSource.Token.ThrowIfCancellationRequested();
                 chunks.Add(pos, chunk);
             }
+
+            foreach (var chunk in chunks.Values)
+            {
+                addTreeLeaves(chunk);
+            }
             
             List<Chunk> toRender = chunks
                 .Where((keyvalpair) => worldGenData.chunksToCreate.Contains(keyvalpair.Key))
@@ -220,6 +225,12 @@ public class World : MonoBehaviour
         }
     }
 
+    private void addTreeLeaves(Chunk chunk)
+    {
+        foreach (var treeLeaves in chunk.TreeData.TreeLeavesSolid)
+            chunk.SetBlock(treeLeaves, BlockType.TreeLeavesSolid);
+    }
+    
     private void createChunk(Vector3Int pos, ChunkMesh mesh)
     {
         ChunkRenderer chunkRenderer = renderChunk(pos, mesh);
