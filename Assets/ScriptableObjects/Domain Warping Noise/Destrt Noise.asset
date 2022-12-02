@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55ec98bc97bc12345af4ce8b93f47eec, type: 3}
-  m_Name: Biome Temperature Noise
+  m_Name: Destrt Noise
   m_EditorClassIdentifier: 
-  NoiseZoom: 0.05
+  NoiseZoom: 0.03
   Octaves: 1
-  Offset: {x: 6543, y: 6669}
+  Offset: {x: 6576, y: 7656}
   WorldOffset: {x: 0, y: 0}
-  Persistance: 0.5
+  Persistance: 0.3
   RedistributionModifier: 1.2
-  Exponent: 5
+  Exponent: 4

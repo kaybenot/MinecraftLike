@@ -229,7 +229,7 @@ MonoBehaviour:
   StartLayer: {fileID: 58852153}
   AdditionalLayers: []
   UseDomainWarping: 1
-  DomainWarping: {fileID: 11400000, guid: 3dbbbd9837f761343a64f11c46baba00, type: 2}
+  DomainWarping: {fileID: 11400000, guid: 85976c26d2f0edf40ae0871a2ab7a817, type: 2}
   TreeGenerator: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
@@ -801,9 +801,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1cc16774be46441afdc945236730a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  biomeWarping: {fileID: 11400000, guid: 5a50c75f99862cf4d97952d027f3e308, type: 2}
+  BiomeWarping: {fileID: 11400000, guid: 5a50c75f99862cf4d97952d027f3e308, type: 2}
   biomeNoiseSettings: {fileID: 11400000, guid: 45a94c62d4442dd44b07c8898a2eb692, type: 2}
-  biomeDatas:
+  BiomeDatas:
   - TemperatureStartThreshold: 0
     TemperatureEndThreshold: 0.5
     Biome: {fileID: 1161349295}

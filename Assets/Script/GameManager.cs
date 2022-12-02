@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
         BiomeGenerator = FindObjectOfType<BiomeGenerator>();
         WorldObj = worldObj;
         World = GameObject.FindWithTag("World").GetComponent<World>();
-        Chunk.Biome = GameObject.FindWithTag("PlainsBiome").GetComponent<Biome>();
 
         loadBlockDatas();
         World.GenerateWorld(spawnPlayer);

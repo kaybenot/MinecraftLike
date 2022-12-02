@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class BiomeGenerator : MonoBehaviour
 {
-    [SerializeField] private DomainWarping biomeWarping;
+    public DomainWarping BiomeWarping;
     [SerializeField] private CustomNoiseSettings biomeNoiseSettings;
-    [SerializeField] private List<BiomeData> biomeDatas;
+    public List<BiomeData> BiomeDatas;
 
     public List<Vector3Int> BiomeCenters { get; private set; }
 
-    private List<float> biomeNoise = new List<float>();
+    public List<float> BiomeNoise { get; private set; } = new List<float>();
     
 
     public void GenerateBiomePoints(Vector2Int mapSeedOffset)
@@ -20,11 +20,11 @@ public class BiomeGenerator : MonoBehaviour
         BiomeCenters = calculateBiomeCenters();
         for (int i = 0; i < BiomeCenters.Count; i++)
         {
-            Vector2Int domainWarpingOffset = biomeWarping.GenerateDomainOffsetInt(BiomeCenters[i].x, BiomeCenters[i].z);
+            Vector2Int domainWarpingOffset = BiomeWarping.GenerateDomainOffsetInt(BiomeCenters[i].x, BiomeCenters[i].z);
             BiomeCenters[i] += new Vector3Int(domainWarpingOffset.x, 0, domainWarpingOffset.y);
         }
 
-        biomeNoise = calculateBiomeNoise(mapSeedOffset);
+        BiomeNoise = calculateBiomeNoise(mapSeedOffset);
     }
 
     private List<float> calculateBiomeNoise(Vector2Int mapSeedOffset)

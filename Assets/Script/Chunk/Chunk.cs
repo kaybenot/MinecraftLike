@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Chunk
@@ -10,7 +11,6 @@ public class Chunk
     public int Height { get; }
     public World World => GameManager.World;
     public Vector3Int WorldPosition { get; }
-    public static Biome Biome { get; set; }
     public bool ModifiedByPlayer { get; set; }
     public TreeData TreeData { get; private set; }
 
@@ -35,10 +35,14 @@ public class Chunk
     /// <param name="mapSeedOffset">Map seed</param>
     public void GenerateChunk(Vector2Int mapSeedOffset)
     {
-        TreeData = Biome.GetTreeData(this, mapSeedOffset);
+        BiomeGenerationSelection biomeSelection = selectBiomeGenerator(WorldPosition, false);
+        TreeData = biomeSelection.Biome.GetTreeData(this, mapSeedOffset);
         for (int x = 0; x < Size; x++)
         for (int z = 0; z < Size; z++)
-            generateBlockColumn(mapSeedOffset, x, z);
+        {
+            var selection = selectBiomeGenerator(new Vector3Int(WorldPosition.x + x, 0, WorldPosition.z + z));
+            selection.Biome.GenerateBlockColumn(this, mapSeedOffset, x, z, selection.TerrainSurfaceNoise);
+        }
     }
 
     /// <summary>
@@ -126,25 +130,58 @@ public class Chunk
         return neighboursToUpdate;
     }
 
-    private void generateBlockColumn(Vector2Int mapSeedOffset, int x, int z)
+    private BiomeGenerationSelection selectBiomeGenerator(Vector3Int worldPosition, bool useDomainWarping = true)
     {
-        GameManager.CustomNoiseSettings.WorldOffset = mapSeedOffset;
-        int groundPosition = getSurfaceHeight(WorldPosition.x + x, WorldPosition.z + z);
-        
-        for (int y = 0; y < Height; y++)
-            Biome.StartLayer.Handle(this, new Vector3Int(x, y, z), groundPosition, mapSeedOffset);
-        
-        foreach (var layer in Biome.AdditionalLayers)
-            layer.Handle(this, new Vector3Int(x, WorldPosition.y, z), groundPosition, mapSeedOffset);
+        if (useDomainWarping)
+        {
+            Vector2Int domainOffset = Vector2Int.RoundToInt(
+                GameManager.BiomeGenerator.BiomeWarping.GenerateDomainOffset(worldPosition.x, worldPosition.z));
+            worldPosition += new Vector3Int(domainOffset.x, 0, domainOffset.y);
+        }
+
+        List<BiomeSelectionHelper> biomeSelectionHelpers = getBiomeGeneratorSelectionHelpers(worldPosition);
+        Biome biome_1 = selectBiome(biomeSelectionHelpers[0].Index);
+        Biome biome_2 = selectBiome(biomeSelectionHelpers[1].Index);
+        float distance = Vector3.Distance(GameManager.BiomeGenerator.BiomeCenters[biomeSelectionHelpers[0].Index],
+            GameManager.BiomeGenerator.BiomeCenters[biomeSelectionHelpers[1].Index]);
+        float weight_0 = biomeSelectionHelpers[1].Distance / distance;
+        float weight_1 = 1 - weight_0;
+        int terrainHeightNoise_0 = biome_1.GetSurfaceHeight(worldPosition.x, worldPosition.z, Height);
+        int terrainHeightNoise_1 = biome_2.GetSurfaceHeight(worldPosition.x, worldPosition.z, Height);
+        return new BiomeGenerationSelection(biome_1, Mathf.RoundToInt(terrainHeightNoise_0 * weight_0 + terrainHeightNoise_1 * weight_1));
     }
 
-    private int getSurfaceHeight(int x, int z)
+    private Biome selectBiome(int index)
     {
-        float surfaceHeight = Biome.UseDomainWarping ? Biome.DomainWarping.GenerateDomainNoise(x, z, GameManager.CustomNoiseSettings) : 
-            CustomNoise.OctavePerlin(x, z, GameManager.CustomNoiseSettings);
-        surfaceHeight = CustomNoise.Redistribution(surfaceHeight, GameManager.CustomNoiseSettings);
-        
-        return CustomNoise.RemapValue01Int(surfaceHeight, 0f, Height);
+        float temp = GameManager.BiomeGenerator.BiomeNoise[index];
+        foreach (var data in GameManager.BiomeGenerator.BiomeDatas)
+        {
+            if (temp >= data.TemperatureStartThreshold && temp < data.TemperatureEndThreshold)
+                return data.Biome;
+        }
+
+        return GameManager.BiomeGenerator.BiomeDatas[0].Biome;
+    }
+    
+    private List<BiomeSelectionHelper> getBiomeGeneratorSelectionHelpers(Vector3Int worldPosition)
+    {
+        worldPosition.y = 0;
+        return getClosestBiomeIndex(worldPosition);
+    }
+
+    private struct BiomeSelectionHelper
+    {
+        public int Index;
+        public float Distance;
+    }
+
+    private List<BiomeSelectionHelper> getClosestBiomeIndex(Vector3Int worldPosition)
+    {
+        return GameManager.BiomeGenerator.BiomeCenters.Select((center, index) => new BiomeSelectionHelper()
+        {
+            Index = index,
+            Distance = Vector3.Distance(center, worldPosition)
+        }).OrderBy(helper => helper.Distance).Take(4).ToList();
     }
 
     private bool inRange(Vector3Int localPosition)
