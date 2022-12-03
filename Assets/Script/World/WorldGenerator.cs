@@ -12,6 +12,7 @@ public class WorldGenerator : MonoBehaviour
 {
     public Queue<ChunkRenderer> ChunkPool { get; } = new Queue<ChunkRenderer>();
     public CancellationTokenSource TokenSource { get; } = new CancellationTokenSource();
+    public Action OnWorldCreated { get; set; }
 
     private World World => GameManager.World;
     
@@ -23,10 +24,9 @@ public class WorldGenerator : MonoBehaviour
         public List<Vector3Int> chunkDataToRemove;
     }
 
-    public async void GenerateWorld(Action spawnPlayer)
+    public async void GenerateWorld()
     {
         await generateWorld(Vector3Int.zero);
-        spawnPlayer?.Invoke();
     }
     
     public async void LoadAdditionalChunksRequest(Player player)
@@ -115,7 +115,10 @@ public class WorldGenerator : MonoBehaviour
         }
 
         if (!World.IsWorldCreated)
+        {
             World.IsWorldCreated = true;
+            OnWorldCreated?.Invoke();
+        }
     }
 
     private ChunkUpdateData getGenerationData(Vector3Int playerPos)

@@ -46,7 +46,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         loadBlockDatas();
-        World.WorldGenerator.GenerateWorld(spawnPlayer);
+        World.WorldGenerator.OnWorldCreated += spawnPlayer;
+        World.WorldGenerator.GenerateWorld();
     }
 
     private void loadBlockDatas()
