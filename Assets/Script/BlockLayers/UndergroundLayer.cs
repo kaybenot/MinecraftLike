@@ -10,7 +10,7 @@ public class UndergroundLayer : BlockLayer
     {
         if (position.y < surfaceHeightNoise)
         {
-            chunk.SetBlock(position, undergroundBlockType);
+            chunk.SetBlock(position, undergroundBlockType, true);
             return true;
         }
 

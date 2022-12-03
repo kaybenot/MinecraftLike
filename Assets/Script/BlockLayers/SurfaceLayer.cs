@@ -10,7 +10,7 @@ public class SurfaceLayer : BlockLayer
     {
         if (position.y == surfaceHeightNoise)
         {
-            chunk.SetBlock(position, surfaceBlockType);
+            chunk.SetBlock(position, surfaceBlockType, true);
             return true;
         }
 

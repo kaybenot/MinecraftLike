@@ -26,7 +26,7 @@ public class StoneLayer : BlockLayer
             for (int i = chunk.WorldPosition.y; i <= endPosition; i++)
             {
                 Vector3Int pos = new Vector3Int(position.x, i, position.z);
-                chunk.SetBlock(pos, BlockType.Stone);
+                chunk.SetBlock(pos, BlockType.Stone, true);
             }
 
             return true;

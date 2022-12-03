@@ -11,21 +11,21 @@ public class TreeLayer : BlockLayer
         if (chunk.WorldPosition.y < 0)
             return false;
         if (surfaceHeightNoise < terrainHeightLimit &&
-            chunk.TreeData.TreePositions.Contains(new Vector2Int(chunk.WorldPosition.x + position.x, chunk.WorldPosition.z + position.z)))
+            chunk.ChunkGenerator.TreeData.TreePositions.Contains(new Vector2Int(chunk.WorldPosition.x + position.x, chunk.WorldPosition.z + position.z)))
         {
             Vector3Int localPos = new Vector3Int(position.x, surfaceHeightNoise, position.z);
             BlockType type = chunk.GetBlock(localPos).BlockType;
             if (type == BlockType.GrassDirt)
             {
-                chunk.SetBlock(localPos, BlockType.Dirt);
+                chunk.SetBlock(localPos, BlockType.Dirt, true);
                 for (int i = 1; i < 5; i++)
                 {
                     localPos.y = surfaceHeightNoise + i;
-                    chunk.SetBlock(localPos, BlockType.TreeTrunk);
+                    chunk.SetBlock(localPos, BlockType.TreeTrunk, true);
                 }
 
                 foreach (var pos in treeLeavesPositions)
-                    chunk.TreeData.TreeLeavesSolid.Add(new Vector3Int(position.x + pos.x, surfaceHeightNoise + 5 + pos.y, position.z + pos.z));
+                    chunk.ChunkGenerator.TreeData.TreeLeavesSolid.Add(new Vector3Int(position.x + pos.x, surfaceHeightNoise + 5 + pos.y, position.z + pos.z));
             }
         }
 

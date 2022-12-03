@@ -10,11 +10,11 @@ public class WaterLayer : BlockLayer
     {
         if (position.y > surfaceHeightNoise && position.y <= waterLayer)
         {
-            chunk.SetBlock(position, BlockType.Water);
+            chunk.SetBlock(position, BlockType.Water, true);
             if (position.y == surfaceHeightNoise + 1)
             {
                 position.y = surfaceHeightNoise;
-                chunk.SetBlock(position, BlockType.Sand);
+                chunk.SetBlock(position, BlockType.Sand, true);
             }
             return true;
         }

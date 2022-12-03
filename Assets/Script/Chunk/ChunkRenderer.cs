@@ -8,16 +8,12 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 public class ChunkRenderer : MonoBehaviour
 {
-    /// <summary>
-    /// Shows chunk gizmo to better visualise its bounds.
-    /// </summary>
     public bool ShowGizmo = false;
     public bool ShowBiomeCenters = false;
     
-    /// <summary>
-    /// Chunk bound to renderer.
-    /// </summary>
-    public Chunk Chunk { get; private set; }
+    public Chunk Chunk { get; set; }
+
+    public static Dictionary<Vector3Int, ChunkRenderer> ChunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
 
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
@@ -29,33 +25,12 @@ public class ChunkRenderer : MonoBehaviour
         meshCollider = GetComponent<MeshCollider>();
         mesh = meshFilter.mesh;
     }
-
-    /// <summary>
-    /// Binds chunk with renderer.
-    /// </summary>
-    /// <param name="chunk">Chunk to be bound</param>
-    public void BindChunk(Chunk chunk)
-    {
-        Chunk = chunk;
-    }
-
-    /// <summary>
-    /// Generates chunk mesh and updates renderer with it.
-    /// </summary>
+    
     public void UpdateMesh()
     {
-        renderMesh(Chunk.GetChunkMesh());
+        renderMesh(Chunk.ChunkMesh);
     }
 
-    /// <summary>
-    /// Updates renderer with given chunk mesh.
-    /// </summary>
-    /// <param name="chunkMesh">Previously generated mesh</param>
-    public void UpdateMesh(ChunkMesh chunkMesh)
-    {
-        renderMesh(chunkMesh);
-    }
-    
     private void renderMesh(ChunkMesh chunkMesh)
     {
         mesh.Clear();
