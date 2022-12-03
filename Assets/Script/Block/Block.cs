@@ -4,17 +4,28 @@ using UnityEngine;
 
 public class Block 
 {
-    private static Dictionary<BlockType, BlockData> BlockDatas = new Dictionary<BlockType, BlockData>();
+    public static Dictionary<BlockType, BlockData> BlockDatas = new Dictionary<BlockType, BlockData>();
     
     public Vector3Int GlobalPosition { get; }
-    public BlockType BlockType { get; set; }
+    public BlockType BlockType
+    {
+        get => blockType;
+        set
+        {
+            GameManager.World.SetBlock(GlobalPosition, value);
+            blockType = value;
+        }
+    }
     public BlockData BlockData => BlockDatas[BlockType];
-    public Chunk Chunk => GameManager.World.GetChunk(GlobalPosition);
+    public Chunk Chunk { get; }
 
-    public Block(Vector3Int globalPosition, BlockType blockType)
+    private BlockType blockType;
+
+    public Block(Vector3Int globalPosition, BlockType blockType, Chunk chunk)
     {
         GlobalPosition = globalPosition;
-        BlockType = blockType;
+        this.blockType = blockType;
+        Chunk = chunk;
     }
     
     public static void AddBlockData(BlockData blockData)

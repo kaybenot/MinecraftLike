@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class ChunkMesh
 {
@@ -23,41 +26,42 @@ public class ChunkMesh
         ColliderTriangles = new List<int>();
     }
 
-    public void TryAddBlock(Chunk chunk, Block block)
+    public void TryAddBlock(Chunk chunk, BlockType blockType, Vector3Int globalPosition)
     {
-        if (block.BlockType == BlockType.Air)
+        if (blockType == BlockType.Air)
             return;
 
-        foreach (Direction dir in DirectionExtensions.ListDirections())
+        var dirs = DirectionExtensions.ListDirections();
+        foreach (Direction dir in dirs)
         {
-            var neighbourBlockCoords = block.GlobalPosition + dir.GetVector();
+            var neighbourBlockCoords = globalPosition + dir.GetVector();
             var neighbourBlock = chunk.GetBlock(neighbourBlockCoords);
             
             if (neighbourBlock != null &&
                 !neighbourBlock.BlockData.isSolid)
             {
-                if (block.BlockType == BlockType.Water)
+                if (blockType == BlockType.Water)
                 {
                     if (neighbourBlock.BlockType == BlockType.Air)
-                        WaterMesh.addBlockFace(dir, block);
+                        WaterMesh.addBlockFace(dir, globalPosition, blockType);
                 }
                 else
-                    addBlockFace(dir, block);
+                    addBlockFace(dir, globalPosition, blockType);
             }
         }
     }
     
-    private void addBlockFace(Direction direction, Block block)
+    private void addBlockFace(Direction direction, Vector3Int globalPosition, BlockType blockType)
     {
-        var pos = block.GlobalPosition;
-        addFaceVertices(direction, pos.x, pos.y, pos.z, block);
-        addQuadTriangles(block);
-        addFaceUV(direction, block);
+        var pos = globalPosition;
+        addFaceVertices(direction, pos.x, pos.y, pos.z, blockType);
+        addQuadTriangles(blockType);
+        addFaceUV(direction, blockType);
     }
     
-    private void addFaceVertices(Direction direction, int x, int y, int z, Block block)
+    private void addFaceVertices(Direction direction, int x, int y, int z, BlockType blockType)
     {
-        var generatesCollider = block.BlockData.generatesCollider;
+        var generatesCollider = Block.BlockDatas[blockType].generatesCollider;
         switch (direction)
         {
             case Direction.Back:
@@ -101,9 +105,9 @@ public class ChunkMesh
         }
     }
 
-    private void addFaceUV(Direction direction, Block block)
+    private void addFaceUV(Direction direction, BlockType blockType)
     {
-        var tilePos = texturePosition(direction, block);
+        var tilePos = texturePosition(direction, blockType);
         float tileWidth = GameManager.BlockAtlas.TileWidth;
         float tileHeight = GameManager.BlockAtlas.TileHeight;
         float textureOffset = GameManager.TextureOffset;
@@ -118,7 +122,7 @@ public class ChunkMesh
             tileHeight * tilePos.y + textureOffset));
     }
 
-    private void addQuadTriangles(Block block)
+    private void addQuadTriangles(BlockType blockType)
     {
         Triangles.Add(Vertices.Count - 4);
         Triangles.Add(Vertices.Count - 3);
@@ -126,7 +130,7 @@ public class ChunkMesh
         Triangles.Add(Vertices.Count - 4);
         Triangles.Add(Vertices.Count - 2);
         Triangles.Add(Vertices.Count - 1);
-        if (block.BlockData.generatesCollider)
+        if (Block.BlockDatas[blockType].generatesCollider)
         {
             ColliderTriangles.Add(Vertices.Count - 4);
             ColliderTriangles.Add(Vertices.Count - 3);
@@ -137,13 +141,14 @@ public class ChunkMesh
         }
     }
     
-    private Vector2Int texturePosition(Direction direction, Block block)
+    private Vector2Int texturePosition(Direction direction, BlockType blockType)
     {
+        var blockData = Block.BlockDatas[blockType];
         return direction switch
         {
-            Direction.Up => block.BlockData.up,
-            Direction.Down => block.BlockData.down,
-            _ => block.BlockData.side
+            Direction.Up => blockData.up,
+            Direction.Down => blockData.down,
+            _ => blockData.side
         };
     }
 

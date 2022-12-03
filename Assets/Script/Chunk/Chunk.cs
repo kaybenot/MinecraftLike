@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 
 public class Chunk
 {
-    public Block[,,] Blocks { get; }
+    public BlockType[,,] Blocks { get; }
     public int Size { get; }
     public int Height { get; }
     public World World => GameManager.World;
@@ -24,25 +24,23 @@ public class Chunk
         Size = size;
         Height = height;
         WorldPosition = worldPosition;
-        Blocks = new Block[size, height, size];
-        for (int x = 0; x < size; x++)
-            for(int y = 0; y < height; y++)
-                for(int z = 0; z < size; z++)
-                    Blocks[x, y, z] = new Block(new Vector3Int(x, y, z), BlockType.Air);
+        Blocks = new BlockType[size, height, size];
     }
 
     public void GenerateChunkMesh()
     {
         ChunkMesh = new ChunkMesh(true);
-        foreach (var block in Blocks)
-            ChunkMesh.TryAddBlock(this, block);
+        for(int x = 0; x < Blocks.GetLength(0); x++)
+            for(int y = 0; y < Blocks.GetLength(1); y++)
+                for(int z = 0; z < Blocks.GetLength(2); z++)
+                    ChunkMesh.TryAddBlock(this, Blocks[x, y, z], new Vector3Int(x, y, z));
     }
     
     public void SetBlock(Vector3Int localPosition, BlockType blockType, bool generating = false)
     {
         if (inRange(localPosition))
         {
-            Blocks[localPosition.x, localPosition.y, localPosition.z].BlockType = blockType;
+            Blocks[localPosition.x, localPosition.y, localPosition.z] = blockType;
             
             if (!generating)
             {
@@ -65,8 +63,13 @@ public class Chunk
     
     public Block GetBlock(Vector3Int localPosition)
     {
-        return inRange(localPosition) ? Blocks[localPosition.x, localPosition.y, localPosition.z] : 
-            World.GetBlock(WorldPosition + localPosition);
+        var globalPos = WorldPosition + localPosition;
+        if (inRange(localPosition))
+        {
+            var blockType = Blocks[localPosition.x, localPosition.y, localPosition.z];
+            return new Block(globalPos, blockType, this);
+        }
+        return World.GetBlock(globalPos);
     }
     
     public Vector3Int GetLocalPosition(Vector3Int globalPosition)

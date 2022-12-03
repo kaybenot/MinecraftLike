@@ -36,8 +36,7 @@ public class World : MonoBehaviour
         Chunk chunk = GetChunk(globalPosition);
         if (chunk == null)
             return null;
-        Vector3Int blockPosition = chunk.GetLocalPosition(globalPosition);
-        return chunk.GetBlock(blockPosition);
+        return chunk.GetBlock(chunk.GetLocalPosition(globalPosition));
     }
 
     public void SetBlock(Vector3Int globalPosition, BlockType blockType, bool generating = false)
