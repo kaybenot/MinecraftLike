@@ -11,8 +11,9 @@ public class Chunk
     public int Height { get; }
     public World World => GameManager.World;
     public Vector3Int WorldPosition { get; }
-    public bool ModifiedByPlayer { get; set; }
     public TreeData TreeData { get; private set; }
+    
+    public static Dictionary<Vector3Int, Chunk> Chunks = new Dictionary<Vector3Int, Chunk>();
 
     public Chunk(int size, int height, Vector3Int worldPosition)
     {
@@ -24,15 +25,10 @@ public class Chunk
             for(int y = 0; y < height; y++)
                 for(int z = 0; z < size; z++)
                     Blocks[x, y, z] = new Block(new Vector3Int(x, y, z), BlockType.Air);
-        ModifiedByPlayer = false;
-        
+
         // TODO: Implement picking biomes
     }
-
-    /// <summary>
-    /// Generates chunk.
-    /// </summary>
-    /// <param name="mapSeedOffset">Map seed</param>
+    
     public void GenerateChunk(Vector2Int mapSeedOffset)
     {
         BiomeGenerationSelection biomeSelection = selectBiomeGenerator(WorldPosition, false);
@@ -44,11 +40,7 @@ public class Chunk
             selection.Biome.GenerateBlockColumn(this, mapSeedOffset, x, z, selection.TerrainSurfaceNoise);
         }
     }
-
-    /// <summary>
-    /// Generates mesh based on current chunk data.
-    /// </summary>
-    /// <returns>Chunk mesh.</returns>
+    
     public ChunkMesh GetChunkMesh()
     {
         ChunkMesh chunkMesh = new ChunkMesh(true);
@@ -58,12 +50,7 @@ public class Chunk
 
         return chunkMesh;
     }
-
-    /// <summary>
-    /// Sets block to specific type.
-    /// </summary>
-    /// <param name="localPosition">Block position in local position</param>
-    /// <param name="blockType">Type to which block has to be set</param>
+    
     public void SetBlock(Vector3Int localPosition, BlockType blockType)
     {
         if (inRange(localPosition))
@@ -72,22 +59,12 @@ public class Chunk
             World.SetBlock(WorldPosition + localPosition, blockType);
     }
     
-    /// <summary>
-    /// Gets block at local position.
-    /// </summary>
-    /// <param name="localPosition">Local position</param>
-    /// <returns>Block</returns>
     public Block GetBlock(Vector3Int localPosition)
     {
         return inRange(localPosition) ? Blocks[localPosition.x, localPosition.y, localPosition.z] : 
             World.GetBlock(WorldPosition + localPosition);
     }
-
-    /// <summary>
-    /// Converts global position to chunk position.
-    /// </summary>
-    /// <param name="globalPosition">Global position</param>
-    /// <returns>Local position</returns>
+    
     public Vector3Int GetLocalPosition(Vector3Int globalPosition)
     {
         return new Vector3Int(
@@ -95,24 +72,14 @@ public class Chunk
             globalPosition.y - WorldPosition.y,
             globalPosition.z - WorldPosition.z);
     }
-
-    /// <summary>
-    /// Checks if block is on edge.
-    /// </summary>
-    /// <param name="globalPosition">Block global position</param>
-    /// <returns>True/False</returns>
+    
     public bool IsOnEdge(Vector3Int globalPosition)
     {
         Vector3Int localPos = GetLocalPosition(globalPosition);
         return localPos.x == 0 || localPos.x == Size - 1 || localPos.y == 0 || localPos.y == Height - 1 ||
                localPos.z == 0 || localPos.z == Size - 1;
     }
-
-    /// <summary>
-    /// List all chunks touched by block.
-    /// </summary>
-    /// <param name="globalPosition">Block global position</param>
-    /// <returns>Chunks that blocks touches</returns>
+    
     public IEnumerable<Chunk> GetTouchedChunks(Vector3Int globalPosition)
     {
         List<Chunk> neighboursToUpdate = new List<Chunk>();

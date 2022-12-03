@@ -41,9 +41,12 @@ public class GameManager : MonoBehaviour
         BiomeGenerator = FindObjectOfType<BiomeGenerator>();
         WorldObj = worldObj;
         World = GameObject.FindWithTag("World").GetComponent<World>();
+    }
 
+    private void Start()
+    {
         loadBlockDatas();
-        World.GenerateWorld(spawnPlayer);
+        World.WorldGenerator.GenerateWorld(spawnPlayer);
     }
 
     private void loadBlockDatas()
@@ -76,7 +79,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(chunkDetectionTime);
         if (lastChunkPos != Player.ChunkPosition)
         {
-            World.LoadAdditionalChunksRequest(Player);
+            World.WorldGenerator.LoadAdditionalChunksRequest(Player);
             lastChunkPos = Player.ChunkPosition;
         }
         else

@@ -25,12 +25,7 @@ public class ChunkMesh
         ColliderTriangles = new List<int>();
     }
 
-    /// <summary>
-    /// Tries adding mesh data based on block.
-    /// To properly process chunk, method should be called for every chunk block.
-    /// </summary>
-    /// <param name="chunk">Block chunk</param>
-    /// <param name="block">Processed block</param>
+
     public void TryAddBlock(Chunk chunk, Block block)
     {
         if (block.BlockType == BlockType.Air)
