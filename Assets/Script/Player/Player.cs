@@ -129,6 +129,15 @@ public class Player : MonoBehaviour
 
     private void modifyTerrain(RaycastHit hit)
     {
-        GameManager.World.SetBlock(hit, BlockType.Air);
+        Vector3Int pos = Vector3Int.RoundToInt(hit.point - hit.normal * 0.1f);
+        var chunk = GameManager.World.GetChunk(pos);
+        GameManager.World.SetBlock(pos, BlockType.Air);
+
+        if (chunk.IsOnEdge(pos))
+        {
+            IEnumerable<Chunk> neighbourChunks = chunk.GetTouchingChunks(pos);
+            foreach (var neigbourChunk in neighbourChunks)
+                neigbourChunk.ChunkRenderer.UpdateMesh();
+        }
     }
 }

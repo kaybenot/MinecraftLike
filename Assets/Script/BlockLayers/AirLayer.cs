@@ -8,7 +8,7 @@ public class AirLayer : BlockLayer
     {
         if (position.y > surfaceHeightNoise)
         {
-            chunk.SetBlock(position, BlockType.Air);
+            chunk.SetBlock(position, BlockType.Air, true);
             return true;
         }
 

@@ -11,8 +11,8 @@ public class ChunkRenderer : MonoBehaviour
     public bool ShowGizmo = false;
     public bool ShowBiomeCenters = false;
     
-    public Chunk Chunk { get; private set; }
-    
+    public Chunk Chunk { get; set; }
+
     public static Dictionary<Vector3Int, ChunkRenderer> ChunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
 
     private MeshFilter meshFilter;
@@ -26,21 +26,11 @@ public class ChunkRenderer : MonoBehaviour
         mesh = meshFilter.mesh;
     }
     
-    public void BindChunk(Chunk chunk)
-    {
-        Chunk = chunk;
-    }
-    
     public void UpdateMesh()
     {
-        renderMesh(Chunk.GetChunkMesh());
+        renderMesh(Chunk.ChunkMesh);
     }
-    
-    public void UpdateMesh(ChunkMesh chunkMesh)
-    {
-        renderMesh(chunkMesh);
-    }
-    
+
     private void renderMesh(ChunkMesh chunkMesh)
     {
         mesh.Clear();

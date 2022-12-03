@@ -46,6 +46,7 @@ public class WorldGenerator : MonoBehaviour
     {
         GameManager.BiomeGenerator.GenerateBiomePoints(World.MapSeed);
         ChunkUpdateData chunkUpdateData = await Task.Run(() => getGenerationData(position), TokenSource.Token);
+        IEnumerable<Chunk> toRender = null;
 
         List<ChunkRenderer> renderers = new List<ChunkRenderer>();
         await Task.Run(() =>
@@ -64,7 +65,6 @@ public class WorldGenerator : MonoBehaviour
             r.gameObject.SetActive(false);
 
         ConcurrentDictionary<Vector3Int, Chunk> chunksDict = new ConcurrentDictionary<Vector3Int, Chunk>();
-        ConcurrentDictionary<Vector3Int, ChunkMesh> chunkMeshDict = new ConcurrentDictionary<Vector3Int, ChunkMesh>();
         await Task.Run(() =>
         {
             foreach (var pos in chunkUpdateData.chunkDataToRemove)
@@ -75,7 +75,7 @@ public class WorldGenerator : MonoBehaviour
                 if (TokenSource.Token.IsCancellationRequested)
                     TokenSource.Token.ThrowIfCancellationRequested();
                 Chunk chunk = new Chunk(World.ChunkSize, World.ChunkHeight, pos);
-                chunk.GenerateChunk(World.MapSeed);
+                chunk.ChunkGenerator.GenerateChunk(World.MapSeed);
                 chunksDict.TryAdd(pos, chunk);
             }
 
@@ -87,72 +87,37 @@ public class WorldGenerator : MonoBehaviour
             }
 
             foreach (var chunk in Chunk.Chunks.Values)
-            {
-                addTreeLeaves(chunk);
-            }
-            
-            List<Chunk> toRender = Chunk.Chunks
+            foreach (var treeLeaves in chunk.ChunkGenerator.TreeData.TreeLeavesSolid)
+                    chunk.SetBlock(treeLeaves, BlockType.TreeLeavesSolid, true);
+
+            toRender = Chunk.Chunks
                 .Where((keyvalpair) => chunkUpdateData.chunksToCreate.Contains(keyvalpair.Key))
-                .Select(keyvalpair => keyvalpair.Value).ToList();
+                .Select(keyvalpair => keyvalpair.Value);
             
             foreach (var chunk in toRender)
             {
                 if(TokenSource.Token.IsCancellationRequested)
                     TokenSource.Token.ThrowIfCancellationRequested();
-                ChunkMesh mesh = chunk.GetChunkMesh();
-                chunkMeshDict.TryAdd(chunk.WorldPosition, mesh);
+                chunk.GenerateChunkMesh();
             } 
         }, TokenSource.Token);
 
-        StartCoroutine(chunkCreationCoroutine(chunkMeshDict));
+        StartCoroutine(chunkCreationCoroutine(toRender));
     }
     
-    IEnumerator chunkCreationCoroutine(ConcurrentDictionary<Vector3Int, ChunkMesh> chunkMeshDict)
+    IEnumerator chunkCreationCoroutine(IEnumerable<Chunk> toRender)
     {
-        foreach (var (key, value) in chunkMeshDict)
+        foreach (var chunk in toRender)
         {
-            createChunk(key, value);
+            chunk.RenderChunk();
+            ChunkRenderer.ChunkRenderers.Add(chunk.WorldPosition, chunk.ChunkRenderer);
             yield return new WaitForEndOfFrame();
         }
 
         if (!World.IsWorldCreated)
             World.IsWorldCreated = true;
     }
-    
-    private void addTreeLeaves(Chunk chunk)
-    {
-        foreach (var treeLeaves in chunk.TreeData.TreeLeavesSolid)
-            chunk.SetBlock(treeLeaves, BlockType.TreeLeavesSolid);
-    }
-    
-    private void createChunk(Vector3Int pos, ChunkMesh mesh)
-    {
-        ChunkRenderer chunkRenderer = renderChunk(pos, mesh);
-        ChunkRenderer.ChunkRenderers.Add(pos, chunkRenderer);
-    }
 
-    private ChunkRenderer renderChunk(Vector3Int pos, ChunkMesh mesh)
-    {
-        ChunkRenderer chunkRenderer;
-        if (ChunkPool.Count > 0)
-        {
-            chunkRenderer = ChunkPool.Dequeue();
-            chunkRenderer.transform.position = pos;
-        }
-        else
-        {
-            GameObject chunkObj = Object.Instantiate(World.ChunkPrefab, pos, Quaternion.identity);
-            chunkObj.transform.parent = GameManager.WorldObj.transform;
-            chunkRenderer = chunkObj.GetComponent<ChunkRenderer>();
-        }
-        
-        chunkRenderer.BindChunk(Chunk.Chunks[pos]);
-        chunkRenderer.UpdateMesh(mesh);
-        chunkRenderer.gameObject.SetActive(true);
-
-        return chunkRenderer;
-    }
-    
     private ChunkUpdateData getGenerationData(Vector3Int playerPos)
     {
         var chunkDataAroundPlayer = World.GetChunkPositionsAround(playerPos, World.RenderDistance + 1);

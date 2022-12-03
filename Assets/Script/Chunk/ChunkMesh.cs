@@ -11,20 +11,17 @@ public class ChunkMesh
     public List<Vector3> ColliderVertices { get; }
     public List<int> ColliderTriangles { get; }
     public ChunkMesh WaterMesh { get; }
-    private bool IsMainMesh { get; }
-    
+
     public ChunkMesh(bool isMainMesh)
     {
         if(isMainMesh)
             WaterMesh = new ChunkMesh(false);
-        IsMainMesh = isMainMesh;
         Vertices = new List<Vector3>();
         Triangles = new List<int>();
         UV = new List<Vector2>();
         ColliderVertices = new List<Vector3>();
         ColliderTriangles = new List<int>();
     }
-
 
     public void TryAddBlock(Chunk chunk, Block block)
     {
