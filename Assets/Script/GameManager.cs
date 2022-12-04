@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ProgressBar progressBar;
     [SerializeField] private GameObject title;
     [SerializeField] private GameObject background;
+    [SerializeField] private GameObject gameMenu;
 
     public static BlockAtlas BlockAtlas { get; private set; }
     public static float TextureOffset { get; private set; }
@@ -32,7 +33,11 @@ public class GameManager : MonoBehaviour
     public static GameObject WorldObj { get; private set; }
     public static ProgressBar ProgressBar { get; private set; }
     public static BiomeGenerator BiomeGenerator { get; private set; }
+    public static bool GameMenuShown { get; private set; }
 
+    
+    private static GameObject title_s;
+    private static GameObject gameMenu_s;
     private Vector3Int lastChunkPos;
     
     private void Awake()
@@ -40,6 +45,8 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        title_s = title;
+        gameMenu_s = gameMenu;
         OnNewChunksGenerated += startCheckingTheMap;
         BlockAtlas = blockAtlas;
         TextureOffset = textureOffset;
@@ -63,6 +70,26 @@ public class GameManager : MonoBehaviour
         World.WorldGenerator.GenerateWorld();
     }
 
+    public static void ShowGameMenu()
+    {
+        Player.BlockInput = true;
+        GameMenuShown = true;
+        title_s.gameObject.SetActive(true);
+        gameMenu_s.SetActive(true);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public static void HideGameMenu()
+    {
+        Player.BlockInput = false;
+        GameMenuShown = false;
+        title_s.gameObject.SetActive(false);
+        gameMenu_s.SetActive(false);
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+    
     private void loadBlockDatas()
     {
         ProgressBar.SetDescription("Loading block data");

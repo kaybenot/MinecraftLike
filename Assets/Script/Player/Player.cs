@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     public Action OnPlace { get; set; }
     public Vector3Int BlockPosition => Vector3Int.RoundToInt(transform.position);
     public Vector3Int ChunkPosition => GameManager.World.GetChunk(BlockPosition).WorldPosition;
+    public bool BlockInput { get; set; } = false;
 
     private Rigidbody rb;
     private Camera cam;
@@ -68,6 +69,13 @@ public class Player : MonoBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
+        if (BlockInput)
+        {
+            inputForce = Vector3.zero;
+            animator.SetBool(Walking, false);
+            return;
+        }
+
         if (context.performed)
         {
             var force = context.ReadValue<Vector2>();
@@ -83,6 +91,8 @@ public class Player : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
+        if (BlockInput)
+            return;
         if (context.performed)
         {
             if(Grounded && Math.Abs(rb.velocity.y) < 0.01f)
@@ -92,6 +102,8 @@ public class Player : MonoBehaviour
 
     public void Look(InputAction.CallbackContext context)
     {
+        if (BlockInput)
+            return;
         if (context.performed)
         {
             Vector2 look = context.ReadValue<Vector2>() * sensitivity;
@@ -102,12 +114,16 @@ public class Player : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext context)
     {
+        if (BlockInput)
+            return;
         if (context.performed)
             OnAttack?.Invoke();
     }
 
     public void Place(InputAction.CallbackContext context)
     {
+        if (BlockInput)
+            return;
         if (context.performed)
             OnPlace?.Invoke();
     }
@@ -118,6 +134,17 @@ public class Player : MonoBehaviour
             speed *= runMultiplier;
         else if (context.canceled)
             speed /= runMultiplier;
+    }
+
+    public void GameMenu(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (GameManager.GameMenuShown)
+                GameManager.HideGameMenu();
+            else
+                GameManager.ShowGameMenu();
+        }
     }
 
     private void destroyBlock()
