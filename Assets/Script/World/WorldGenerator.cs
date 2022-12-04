@@ -44,9 +44,14 @@ public class WorldGenerator : MonoBehaviour
     
     private async Task generateWorld(Vector3Int position)
     {
+        if (!World.IsWorldCreated)
+            GameManager.ProgressBar.SetDescription("Generating world data");
         GameManager.BiomeGenerator.GenerateBiomePoints(World.MapSeed);
         ChunkUpdateData chunkUpdateData = await Task.Run(() => getGenerationData(position), TokenSource.Token);
         IEnumerable<Chunk> toRender = null;
+        
+        if (!World.IsWorldCreated)
+            GameManager.ProgressBar.SetProgress(0.1f);
 
         List<ChunkRenderer> renderers = new List<ChunkRenderer>();
         await Task.Run(() =>
@@ -63,13 +68,16 @@ public class WorldGenerator : MonoBehaviour
         });
         foreach (var r in renderers)
             r.gameObject.SetActive(false);
+        
+        if (!World.IsWorldCreated)
+            GameManager.ProgressBar.SetProgress(0.2f);
 
         ConcurrentDictionary<Vector3Int, Chunk> chunksDict = new ConcurrentDictionary<Vector3Int, Chunk>();
         await Task.Run(() =>
         {
             foreach (var pos in chunkUpdateData.chunkDataToRemove)
                 Chunk.Chunks.Remove(pos);
-            
+
             foreach (var pos in chunkUpdateData.chunkDataToCreate)
             {
                 if (TokenSource.Token.IsCancellationRequested)
@@ -78,30 +86,63 @@ public class WorldGenerator : MonoBehaviour
                 chunk.ChunkGenerator.GenerateChunk(World.MapSeed);
                 chunksDict.TryAdd(pos, chunk);
             }
+        });
 
+        if (!World.IsWorldCreated)
+            GameManager.ProgressBar.SetProgress(0.5f);
+
+        await Task.Run(() =>
+        {
             foreach (var (pos, chunk) in chunksDict)
             {
                 if (TokenSource.Token.IsCancellationRequested)
                     TokenSource.Token.ThrowIfCancellationRequested();
                 Chunk.Chunks.Add(pos, chunk);
             }
+        });
 
+        if (!World.IsWorldCreated)
+        {
+            GameManager.ProgressBar.SetProgress(0.6f);
+            GameManager.ProgressBar.SetDescription("Generating tree data");
+        }
+            
+        await Task.Run(() =>
+        {
             foreach (var chunk in Chunk.Chunks.Values)
             foreach (var treeLeaves in chunk.ChunkGenerator.TreeData.TreeLeavesSolid)
-                    chunk.SetBlock(treeLeaves, BlockType.TreeLeavesSolid, true);
-
+                chunk.SetBlock(treeLeaves, BlockType.TreeLeavesSolid, true);
+        });
+        
+        if (!World.IsWorldCreated)
+        {
+            GameManager.ProgressBar.SetProgress(0.7f);
+            GameManager.ProgressBar.SetDescription("Preparing chunks for rendering");
+        }
+        
+        await Task.Run(() =>
+        {
             toRender = Chunk.Chunks
                 .Where((keyvalpair) => chunkUpdateData.chunksToCreate.Contains(keyvalpair.Key))
                 .Select(keyvalpair => keyvalpair.Value);
-            
+        });
+        
+        if (!World.IsWorldCreated)
+            GameManager.ProgressBar.SetProgress(0.9f);
+        
+        await Task.Run(() =>
+        {
             foreach (var chunk in toRender)
             {
                 if(TokenSource.Token.IsCancellationRequested)
                     TokenSource.Token.ThrowIfCancellationRequested();
                 chunk.GenerateChunkMesh();
-            } 
+            }
         }, TokenSource.Token);
 
+        if (!World.IsWorldCreated)
+            GameManager.ProgressBar.SetProgress(1f);
+        
         StartCoroutine(chunkCreationCoroutine(toRender));
     }
     

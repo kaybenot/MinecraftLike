@@ -18,6 +18,11 @@ public class GameManager : MonoBehaviour
     [Header("Player")]
     [SerializeField] private GameObject playerPrefab;
 
+    [Header("Other")]
+    [SerializeField] private ProgressBar progressBar;
+    [SerializeField] private GameObject title;
+    [SerializeField] private GameObject background;
+
     public static BlockAtlas BlockAtlas { get; private set; }
     public static float TextureOffset { get; private set; }
     public static CustomNoiseSettings CustomNoiseSettings { get; private set; }
@@ -25,7 +30,8 @@ public class GameManager : MonoBehaviour
     public static Player Player { get; private set; }
     public static Action OnNewChunksGenerated { get; set; }
     public static GameObject WorldObj { get; private set; }
-    public static BiomeGenerator BiomeGenerator;
+    public static ProgressBar ProgressBar { get; private set; }
+    public static BiomeGenerator BiomeGenerator { get; private set; }
 
     private Vector3Int lastChunkPos;
     
@@ -38,6 +44,7 @@ public class GameManager : MonoBehaviour
         BlockAtlas = blockAtlas;
         TextureOffset = textureOffset;
         CustomNoiseSettings = customNoiseSettings;
+        ProgressBar = progressBar;
         BiomeGenerator = FindObjectOfType<BiomeGenerator>();
         WorldObj = worldObj;
         World = GameObject.FindWithTag("World").GetComponent<World>();
@@ -46,14 +53,22 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         loadBlockDatas();
-        World.WorldGenerator.OnWorldCreated += spawnPlayer;
+        World.WorldGenerator.OnWorldCreated += () =>
+        {
+            ProgressBar.gameObject.SetActive(false);
+            title.SetActive(false);
+            background.SetActive(false);
+            spawnPlayer();
+        };
         World.WorldGenerator.GenerateWorld();
     }
 
     private void loadBlockDatas()
     {
+        ProgressBar.SetDescription("Loading block data");
         foreach (var blockData in BlockAtlas.BlockDatas)
             Block.AddBlockData(blockData);
+        ProgressBar.SetProgress(0.05f);
     }
 
     private void spawnPlayer()
