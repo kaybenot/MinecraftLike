@@ -38,8 +38,10 @@ public class WorldGenerator : MonoBehaviour
     public void ClearWorld()
     {
         foreach (var chunkRenderer in ChunkRenderer.ChunkRenderers.Values)
-            Object.Destroy(chunkRenderer.gameObject);
+            Destroy(chunkRenderer.gameObject);
         ChunkPool.Clear();
+        Chunk.Chunks.Clear();
+        ChunkRenderer.ChunkRenderers.Clear();
     }
     
     private async Task generateWorld(Vector3Int position)
@@ -89,7 +91,7 @@ public class WorldGenerator : MonoBehaviour
         });
 
         if (!World.IsWorldCreated)
-            GameManager.ProgressBar.SetProgress(0.5f);
+            GameManager.ProgressBar.SetProgress(0.4f);
 
         await Task.Run(() =>
         {
@@ -103,7 +105,7 @@ public class WorldGenerator : MonoBehaviour
 
         if (!World.IsWorldCreated)
         {
-            GameManager.ProgressBar.SetProgress(0.6f);
+            GameManager.ProgressBar.SetProgress(0.45f);
             GameManager.ProgressBar.SetDescription("Generating tree data");
         }
             
@@ -112,6 +114,26 @@ public class WorldGenerator : MonoBehaviour
             foreach (var chunk in Chunk.Chunks.Values)
             foreach (var treeLeaves in chunk.ChunkGenerator.TreeData.TreeLeavesSolid)
                 chunk.SetBlock(treeLeaves, BlockType.TreeLeavesSolid, true);
+        });
+        
+        if (!World.IsWorldCreated)
+        {
+            GameManager.ProgressBar.SetProgress(0.5f);
+            GameManager.ProgressBar.SetDescription("Applying save data");
+        }
+
+        await Task.Run(() =>
+        {
+            foreach (var chunk in Chunk.Chunks.Values)
+            {
+                if (!Save.SaveData.ModifiedChunks.Contains(chunk.WorldPosition))
+                    continue;
+                foreach (var (pos, type) in Save.SaveData.ModifiedBlocks[chunk.WorldPosition])
+                {
+                    var localPos = chunk.GetLocalPosition(pos);
+                    chunk.SetBlock(localPos, type, true);
+                }
+            }
         });
         
         if (!World.IsWorldCreated)

@@ -29,6 +29,8 @@ public class World : MonoBehaviour
     private void OnDisable()
     {
         WorldGenerator.TokenSource.Cancel();
+        WorldGenerator.ClearWorld();
+        GameManager.OnNewChunksGenerated = null;
     }
 
     public Block GetBlock(Vector3Int globalPosition)

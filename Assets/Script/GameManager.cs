@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -57,8 +58,9 @@ public class GameManager : MonoBehaviour
         World = GameObject.FindWithTag("World").GetComponent<World>();
     }
 
-    private void Start()
+    private async void Start()
     {
+        Save.LoadWorld(0);
         loadBlockDatas();
         World.WorldGenerator.OnWorldCreated += () =>
         {
@@ -68,6 +70,7 @@ public class GameManager : MonoBehaviour
             spawnPlayer();
         };
         World.WorldGenerator.GenerateWorld();
+        await Task.Run(Save.RunSaveLoop);
     }
 
     public static void ShowGameMenu()

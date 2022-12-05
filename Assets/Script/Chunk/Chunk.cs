@@ -41,9 +41,10 @@ public class Chunk
         if (inRange(localPosition))
         {
             Blocks[localPosition.x, localPosition.y, localPosition.z] = blockType;
-            
+
             if (!generating)
             {
+                Save.BlocksToSave.Enqueue(new Block(WorldPosition + localPosition, blockType, this));
                 GenerateChunkMesh();
                 ChunkRenderer.UpdateMesh();
             }

@@ -9,6 +9,7 @@ public class BackToMenu : MonoBehaviour
     
     public void Load()
     {
+        Save.SaveWorld(0);
         SceneManager.LoadSceneAsync(sceneIndex);
     }
 }
