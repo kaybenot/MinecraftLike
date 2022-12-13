@@ -115,6 +115,7 @@ public class Chunk
         else
         {
             GameObject chunkObj = Object.Instantiate(GameManager.World.ChunkPrefab, WorldPosition, Quaternion.identity);
+            chunkObj.layer = LayerMask.NameToLayer("Ground");
             chunkObj.transform.parent = GameManager.WorldObj.transform;
             ChunkRenderer = chunkObj.GetComponent<ChunkRenderer>();
         }

@@ -107,8 +107,8 @@ public class Player : MonoBehaviour
         if (context.performed)
         {
             Vector2 look = context.ReadValue<Vector2>() * sensitivity;
-            player.Rotate(0f, look.x, 0f);
-            playerHead.Rotate(-look.y, 0f, 0f);
+            player.localRotation = Quaternion.Euler(0f, look.x + player.localEulerAngles.y, 0f);
+            playerHead.localRotation = Quaternion.Euler(playerHead.localEulerAngles.x - look.y, 0f, 0f);
         }
     }
 
