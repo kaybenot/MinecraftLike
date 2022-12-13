@@ -877,6 +877,8 @@ MonoBehaviour:
   jumpHeight: 1.2
   groundMaxAngle: 30
   range: 4
+  maxLookAngle: 90
+  minLookAngle: -90
 --- !u!95 &3791526165139647264
 Animator:
   serializedVersion: 4

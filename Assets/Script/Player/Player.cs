@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     [SerializeField, Min(0f)] private float jumpHeight = 1.2f;
     [SerializeField] private float groundMaxAngle = 30f;
     [SerializeField] private float range = 4f;
+    [SerializeField, Range(-90f, 90f)] private float maxLookAngle = 90f; 
+    [SerializeField, Range(-90f, 90f)] private float minLookAngle = -90f; 
     
     public bool Grounded { get; private set; }
     public Action OnAttack { get; set; }
@@ -33,7 +35,14 @@ public class Player : MonoBehaviour
     private Animator animator;
     private Transform collitionTransform;
     private float minGroundDotProduct;
+    private float headRotation;
     private static readonly int Walking = Animator.StringToHash("Walking");
+
+    private void OnValidate()
+    {
+        if (maxLookAngle < minLookAngle)
+            maxLookAngle = minLookAngle;
+    }
 
     private void Awake()
     {
@@ -107,8 +116,11 @@ public class Player : MonoBehaviour
         if (context.performed)
         {
             Vector2 look = context.ReadValue<Vector2>() * sensitivity;
+            headRotation -= look.y;
+            headRotation = Mathf.Clamp(headRotation, minLookAngle, maxLookAngle);
+            
             player.localRotation = Quaternion.Euler(0f, look.x + player.localEulerAngles.y, 0f);
-            playerHead.localRotation = Quaternion.Euler(playerHead.localEulerAngles.x - look.y, 0f, 0f);
+            playerHead.localRotation = Quaternion.Euler(headRotation, 0f, 0f);
         }
     }
 
