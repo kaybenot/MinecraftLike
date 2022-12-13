@@ -19,11 +19,10 @@ public class GameManager : MonoBehaviour
     [Header("Player")]
     [SerializeField] private GameObject playerPrefab;
 
-    [Header("Other")]
-    [SerializeField] private ProgressBar progressBar;
-    [SerializeField] private GameObject title;
-    [SerializeField] private GameObject background;
+    [Header("GUI")]
+    [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject gameMenu;
+    [SerializeField] private GameObject gameInterface;
 
     public static BlockAtlas BlockAtlas { get; private set; }
     public static float TextureOffset { get; private set; }
@@ -35,24 +34,23 @@ public class GameManager : MonoBehaviour
     public static ProgressBar ProgressBar { get; private set; }
     public static BiomeGenerator BiomeGenerator { get; private set; }
     public static bool GameMenuShown { get; private set; }
-
+    public static GameObject Interface { get; private set; }
     
-    private static GameObject title_s;
     private static GameObject gameMenu_s;
     private Vector3Int lastChunkPos;
-    
+
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        title_s = title;
+        Interface = gameInterface;
         gameMenu_s = gameMenu;
         OnNewChunksGenerated += startCheckingTheMap;
         BlockAtlas = blockAtlas;
         TextureOffset = textureOffset;
         CustomNoiseSettings = customNoiseSettings;
-        ProgressBar = progressBar;
+        ProgressBar = loadingScreen.GetComponentInChildren<ProgressBar>();
         BiomeGenerator = FindObjectOfType<BiomeGenerator>();
         WorldObj = worldObj;
         World = GameObject.FindWithTag("World").GetComponent<World>();
@@ -64,9 +62,8 @@ public class GameManager : MonoBehaviour
         loadBlockDatas();
         World.WorldGenerator.OnWorldCreated += () =>
         {
-            ProgressBar.gameObject.SetActive(false);
-            title.SetActive(false);
-            background.SetActive(false);
+            loadingScreen.SetActive(false);
+            Interface.SetActive(true);
             spawnPlayer();
         };
         World.WorldGenerator.GenerateWorld();
@@ -77,8 +74,9 @@ public class GameManager : MonoBehaviour
     {
         Player.BlockInput = true;
         GameMenuShown = true;
-        title_s.gameObject.SetActive(true);
         gameMenu_s.SetActive(true);
+        Interface.SetActive(false);
+            
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
@@ -87,8 +85,9 @@ public class GameManager : MonoBehaviour
     {
         Player.BlockInput = false;
         GameMenuShown = false;
-        title_s.gameObject.SetActive(false);
         gameMenu_s.SetActive(false);
+        Interface.SetActive(true);
+        
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
