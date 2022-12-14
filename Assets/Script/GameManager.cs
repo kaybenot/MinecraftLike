@@ -58,6 +58,8 @@ public class GameManager : MonoBehaviour
 
     private async void Start()
     {
+        World.MapSeed = new Vector2Int(Random.Range(-99999, 99999), Random.Range(-99999, 99999));
+        Save.InitSave(World.MapSeed);
         Save.LoadWorld(GameState.SaveSlot);
         loadBlockDatas();
         World.WorldGenerator.OnWorldCreated += () =>
@@ -68,11 +70,6 @@ public class GameManager : MonoBehaviour
         };
         World.WorldGenerator.GenerateWorld();
         await Task.Run(Save.RunSaveLoop);
-    }
-
-    private void OnDestroy()
-    {
-        Save.ClearSaveInfo();
     }
 
     public static void ShowGameMenu()

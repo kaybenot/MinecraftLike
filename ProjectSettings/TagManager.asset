@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlainsBiome
   - World
+  - Debug
   layers:
   - Default
   - TransparentFX

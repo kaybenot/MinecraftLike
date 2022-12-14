@@ -39,11 +39,13 @@ public struct SerializableVector3Int
 [Serializable]
 public class ChunkSaveData
 {
+    public Vector2Int MapSeed;
     public List<SerializableVector3Int> ModifiedChunks { get; }
     public Dictionary<SerializableVector3Int, Dictionary<SerializableVector3Int, BlockType>> ModifiedBlocks { get; }
 
-    public ChunkSaveData()
+    public ChunkSaveData(Vector2Int mapSeed)
     {
+        MapSeed = mapSeed;
         ModifiedChunks = new List<SerializableVector3Int>();
         ModifiedBlocks = new Dictionary<SerializableVector3Int, Dictionary<SerializableVector3Int, BlockType>>();
     }
@@ -51,13 +53,13 @@ public class ChunkSaveData
 
 public static class Save
 {
-    public static ChunkSaveData SaveData = new ChunkSaveData();
+    public static ChunkSaveData SaveData;
     public static Queue<Block> BlocksToSave = new Queue<Block>();
     public static bool IsSaving = false;
 
-    public static void ClearSaveInfo()
+    public static void InitSave(Vector2Int mapSeed)
     {
-        SaveData = new ChunkSaveData();
+        SaveData = new ChunkSaveData(mapSeed);
         BlocksToSave.Clear();
     }
     
@@ -83,6 +85,7 @@ public static class Save
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream chunkListFile = new FileStream(path, FileMode.OpenOrCreate);
         SaveData = (ChunkSaveData)formatter.Deserialize(chunkListFile);
+        GameManager.World.MapSeed = SaveData.MapSeed;
         chunkListFile.Close();
     }
 
