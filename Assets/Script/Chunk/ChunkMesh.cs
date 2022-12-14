@@ -36,9 +36,14 @@ public class ChunkMesh
         {
             var neighbourBlockCoords = globalPosition + dir.GetVector();
             var neighbourBlock = chunk.GetBlock(neighbourBlockCoords);
-            
-            if (neighbourBlock != null &&
-                !neighbourBlock.BlockData.isSolid)
+
+            if (neighbourBlock == null)
+            {
+                addBlockFace(dir, globalPosition, blockType);
+                continue;
+            }
+
+            if (!neighbourBlock.BlockData.isSolid)
             {
                 if (blockType == BlockType.Water)
                 {

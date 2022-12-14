@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
     [SerializeField, Range(0f, 1f)] private float sensitivity = 0.3f;
     [SerializeField] private LayerMask groundMask = -1;
