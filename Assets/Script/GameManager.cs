@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -23,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject gameMenu;
     [SerializeField] private GameObject gameInterface;
+    [SerializeField] private GameObject debugInfo;
 
     public static BlockAtlas BlockAtlas { get; private set; }
     public static float TextureOffset { get; private set; }
@@ -131,5 +133,11 @@ public class GameManager : MonoBehaviour
         }
         else
             StartCoroutine(checkIfShouldLoadNextPosition());
+    }
+
+    public void ToggleDebug(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+            debugInfo.SetActive(!debugInfo.activeSelf);
     }
 }
