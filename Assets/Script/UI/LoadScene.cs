@@ -6,21 +6,20 @@ using UnityEngine.SceneManagement;
 
 public class LoadScene : MonoBehaviour
 {
+    [SerializeField] private int slot = -1;
     [SerializeField] private int sceneIndex = 1;
-    [SerializeField] private GameObject startButton;
-    [SerializeField] private GameObject exitButton;
     [SerializeField] private ProgressBar progressBar;
     
     private AsyncOperation operation;
 
     public void Load()
     {
-        startButton.SetActive(false);
-        exitButton.SetActive(false);
         progressBar.gameObject.SetActive(true);
         operation = SceneManager.LoadSceneAsync(sceneIndex);
         operation.allowSceneActivation = false;
         progressBar.SetDescription("Loading scene");
+
+        GameState.SaveSlot = slot;
 
         progressBar.Coroutine(sceneLoading());
     }

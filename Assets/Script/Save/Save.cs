@@ -54,6 +54,12 @@ public static class Save
     public static ChunkSaveData SaveData = new ChunkSaveData();
     public static Queue<Block> BlocksToSave = new Queue<Block>();
     public static bool IsSaving = false;
+
+    public static void ClearSaveInfo()
+    {
+        SaveData = new ChunkSaveData();
+        BlocksToSave.Clear();
+    }
     
     public static void SaveWorld(int slot)
     {
@@ -71,7 +77,7 @@ public static class Save
         string path = "Saves/Save" + slot + "/World";
         if (!File.Exists(path))
         {
-            Debug.Log("Save file do not exist");
+            Debug.Log("Save file does not exist. Creating new world...");
             return;
         }
         BinaryFormatter formatter = new BinaryFormatter();
@@ -99,5 +105,20 @@ public static class Save
             else
                 System.Threading.Thread.Sleep(1000);
         }
+    }
+
+    public static bool[] CheckIfSavesExist()
+    {
+        bool[] saves = new bool[3];
+        for (int slot = 0; slot < 3; slot++)
+        {
+            string path = "Saves/Save" + slot + "/World";
+            if (File.Exists(path))
+                saves[slot] = true;
+            else
+                saves[slot] = false;
+        }
+
+        return saves;
     }
 }

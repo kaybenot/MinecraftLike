@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
 
     private async void Start()
     {
-        Save.LoadWorld(0);
+        Save.LoadWorld(GameState.SaveSlot);
         loadBlockDatas();
         World.WorldGenerator.OnWorldCreated += () =>
         {
@@ -68,6 +68,11 @@ public class GameManager : MonoBehaviour
         };
         World.WorldGenerator.GenerateWorld();
         await Task.Run(Save.RunSaveLoop);
+    }
+
+    private void OnDestroy()
+    {
+        Save.ClearSaveInfo();
     }
 
     public static void ShowGameMenu()
