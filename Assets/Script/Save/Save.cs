@@ -39,13 +39,13 @@ public struct SerializableVector3Int
 [Serializable]
 public class ChunkSaveData
 {
-    public Vector2Int MapSeed;
+    public SerializableVector3Int MapSeed;
     public List<SerializableVector3Int> ModifiedChunks { get; }
     public Dictionary<SerializableVector3Int, Dictionary<SerializableVector3Int, BlockType>> ModifiedBlocks { get; }
 
     public ChunkSaveData(Vector2Int mapSeed)
     {
-        MapSeed = mapSeed;
+        MapSeed = new SerializableVector3Int(mapSeed.x, mapSeed.y, 0);
         ModifiedChunks = new List<SerializableVector3Int>();
         ModifiedBlocks = new Dictionary<SerializableVector3Int, Dictionary<SerializableVector3Int, BlockType>>();
     }
@@ -85,7 +85,7 @@ public static class Save
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream chunkListFile = new FileStream(path, FileMode.OpenOrCreate);
         SaveData = (ChunkSaveData)formatter.Deserialize(chunkListFile);
-        GameManager.World.MapSeed = SaveData.MapSeed;
+        GameManager.World.MapSeed = new Vector2Int(SaveData.MapSeed.x, SaveData.MapSeed.y);
         chunkListFile.Close();
     }
 
