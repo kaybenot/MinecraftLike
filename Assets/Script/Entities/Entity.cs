@@ -6,4 +6,5 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     public float Health { get; set; } = 20f;
+    public Inventory Inventory { get; set; }
 }

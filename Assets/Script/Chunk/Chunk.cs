@@ -72,6 +72,11 @@ public class Chunk
         }
         return World.GetBlock(globalPos);
     }
+
+    public Block GetBlockGlobalCoord(Vector3Int globalPosition)
+    {
+        return GetBlock(globalPosition - WorldPosition);
+    }
     
     public Vector3Int GetLocalPosition(Vector3Int globalPosition)
     {

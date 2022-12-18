@@ -17,8 +17,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float chunkDetectionTime = 1f;
     [SerializeField] private CustomNoiseSettings customNoiseSettings;
 
-    [Header("Player")]
+    [Header("Prefabs")]
     [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject dropPrefab;
 
     [Header("GUI")]
     [SerializeField] private GameObject loadingScreen;
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour
     public static BiomeGenerator BiomeGenerator { get; private set; }
     public static bool GameMenuShown { get; private set; }
     public static GameObject Interface { get; private set; }
+    public static GameObject DropPrefab { get; private set; }
     
     private static GameObject gameMenu_s;
     private Vector3Int lastChunkPos;
@@ -46,6 +48,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        DropPrefab = dropPrefab;
         Interface = gameInterface;
         gameMenu_s = gameMenu;
         OnNewChunksGenerated += startCheckingTheMap;

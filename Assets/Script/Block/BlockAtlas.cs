@@ -14,6 +14,8 @@ public class BlockAtlas : ScriptableObject
 public class BlockData
 {
     public BlockType BlockType;
+    public ItemType DropType;
+    public int MinDropAmount, MaxDropAmount;
     public Vector2Int up, down, side;
     public bool isSolid = true;
     public bool generatesCollider = true;

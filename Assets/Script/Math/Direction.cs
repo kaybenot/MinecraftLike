@@ -41,10 +41,10 @@ public static class DirectionExtensions
         {
             Direction.Back,
             Direction.Down,
-            Direction.Forward,
+            Direction.Up,
             Direction.Left,
             Direction.Right,
-            Direction.Up
+            Direction.Forward
         };
         return directions;
     }

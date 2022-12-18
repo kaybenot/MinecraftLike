@@ -55,7 +55,7 @@ public class ChunkMesh
             }
         }
     }
-    
+
     private void addBlockFace(Direction direction, Vector3Int globalPosition, BlockType blockType)
     {
         var pos = globalPosition;

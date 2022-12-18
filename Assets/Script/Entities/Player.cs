@@ -53,6 +53,8 @@ public class Player : Entity
         cam = Camera.main;
 
         minGroundDotProduct = Mathf.Cos(groundMaxAngle * Mathf.Deg2Rad);
+        
+        Inventory = new Inventory(10);
     }
 
     private void Update()
@@ -170,6 +172,7 @@ public class Player : Entity
     {
         Vector3Int pos = Vector3Int.RoundToInt(hit.point - hit.normal * 0.1f);
         var chunk = GameManager.World.GetChunk(pos);
+        Drop.Spawn(pos, (ItemType) chunk.GetBlockGlobalCoord(pos).BlockType);
         GameManager.World.SetBlock(pos, BlockType.Air);
 
         if (chunk.IsOnEdge(pos))
@@ -178,5 +181,10 @@ public class Player : Entity
             foreach (var neigbourChunk in neighbourChunks)
                 neigbourChunk.ChunkRenderer.UpdateMesh();
         }
+    }
+
+    public void PickUpItem(ItemType itemType)
+    {
+        Inventory.AddItem(itemType);
     }
 }

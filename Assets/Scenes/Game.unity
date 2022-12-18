@@ -1314,6 +1314,8 @@ MonoBehaviour:
     type: 2}
   playerPrefab: {fileID: 3791526165130123504, guid: 898ff3fb45a41b04985deff2834b6695,
     type: 3}
+  dropPrefab: {fileID: 6125826422688268097, guid: a15865c473d006041b06ec3b01c943dd,
+    type: 3}
   loadingScreen: {fileID: 2048890855}
   gameMenu: {fileID: 976050165}
   gameInterface: {fileID: 629497901}

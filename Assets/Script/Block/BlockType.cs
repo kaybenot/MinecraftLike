@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum BlockType
 {
-    Air,
+    Air = 0,
     GrassDirt,
     Dirt,
     GrassStone,
@@ -13,5 +13,6 @@ public enum BlockType
     TreeLeavesTransparent,
     TreeLeavesSolid,
     Water,
-    Sand
+    Sand,
+    Total
 }
