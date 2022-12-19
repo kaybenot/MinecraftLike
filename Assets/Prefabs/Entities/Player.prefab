@@ -1053,6 +1053,26 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 50242fd7-000d-4f2b-8256-0b709409920a
     m_ActionName: Player/GameMenu[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4756606994710942796}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: ToggleInventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: cbcf8626-ec2c-43d4-bb86-d9a4a40cce1c
+    m_ActionName: Player/Inventory[/Keyboard/i]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f04ec205-f81b-4e4c-a386-25e0ad0c4d6e
+    m_ActionName: Navigation/Debug[/Keyboard/f3]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

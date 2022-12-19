@@ -32,6 +32,16 @@ public class Inventory
         }
     }
     
+    public Item getItem(int slot)
+    {
+        return Items[slot];
+    }
+    
+    public void RemoveItem(int slot)
+    {
+        Items[slot] = new Item(ItemType.Nothing);
+    }
+    
     public int ContainsItem(ItemType itemType)
     {
         for(var i = 0; i < Size; i++)

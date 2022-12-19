@@ -7,11 +7,13 @@ using UnityEngine;
 public class Drop : MonoBehaviour
 {
     public ItemType ItemType = ItemType.Nothing;
+    [SerializeField] private float pickupTime = 3f;
     [SerializeField] private float rotationSpeed = 36f;
     [SerializeField] private float bobSpeed = 1f;
     [SerializeField] private float bobHeight = 0.1f;
 
     private Rigidbody rb;
+    private bool canPickup;
 
     private void Start()
     {
@@ -21,17 +23,28 @@ public class Drop : MonoBehaviour
 
     private void Update()
     {
-        transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Sin(Time.time * bobSpeed) * bobHeight, transform.localPosition.z);
+        if(pickupTime > 0)
+        {
+            pickupTime -= Time.deltaTime;
+            if (pickupTime <= 0)
+                canPickup = true;
+        }
+
+        var localPos = transform.localPosition;
+        transform.localPosition = new Vector3(localPos.x, Mathf.Sin(Time.time * bobSpeed) * bobHeight, localPos.z);
         transform.localRotation = Quaternion.Euler(0, Time.time * rotationSpeed, 0);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
+        if (!canPickup)
+            return;
+        
         var parent = other.transform.parent;
         if (parent == null || !parent.TryGetComponent(out Player player))
             return;
         player.PickUpItem(ItemType);
-        Destroy(gameObject);
+        Destroy(gameObject.transform.parent.gameObject);
     }
 
     public static void Spawn(Vector3 globalPosition, ItemType itemType)

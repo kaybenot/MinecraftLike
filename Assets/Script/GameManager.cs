@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     public static bool GameMenuShown { get; private set; }
     public static GameObject Interface { get; private set; }
     public static GameObject DropPrefab { get; private set; }
-    
+
     private static GameObject gameMenu_s;
     private Vector3Int lastChunkPos;
 
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
+        
         DropPrefab = dropPrefab;
         Interface = gameInterface;
         gameMenu_s = gameMenu;

@@ -1271,6 +1271,7 @@ GameObject:
   - component: {fileID: 1341329656}
   - component: {fileID: 1341329657}
   - component: {fileID: 1341329658}
+  - component: {fileID: 1341329659}
   m_Layer: 0
   m_Name: == Managers ==
   m_TagString: Untagged
@@ -1405,11 +1406,31 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f04ec205-f81b-4e4c-a386-25e0ad0c4d6e
     m_ActionName: Navigation/Debug[/Keyboard/f3]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cbcf8626-ec2c-43d4-bb86-d9a4a40cce1c
+    m_ActionName: Player/Inventory[/Keyboard/i]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Navigation
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1341329659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341329653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89df4d517103a97469af0f70bfe97f99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryWindow: {fileID: 6515517091957755997, guid: 8769c210f5655984cb05af6d7b9b97ef,
+    type: 3}
+  inventorySlot: {fileID: 6555470834565336386, guid: b28175f61ea93b943b468b3524d6827c,
+    type: 3}
 --- !u!1 &1349348818
 GameObject:
   m_ObjectHideFlags: 0
@@ -2282,7 +2303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4fc35d92ab6d6f439a1eccfdd042da4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RenderDistance: 8
+  RenderDistance: 4
   ChunkSize: 16
   ChunkHeight: 100
   ChunkPrefab: {fileID: 5911899811142283208, guid: 675235fd7946de64bb303f4f30bd6975,

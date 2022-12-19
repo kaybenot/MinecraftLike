@@ -160,6 +160,17 @@ public class Player : Entity
                 GameManager.ShowGameMenu();
         }
     }
+    
+    public void ToggleInventory(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if(InventoryWindow.Singleton.isOpened)
+                InventoryWindow.Singleton.CloseInventory();
+            else
+                InventoryWindow.Singleton.OpenInventory(Inventory);
+        }
+    }
 
     private void destroyBlock()
     {
@@ -186,5 +197,6 @@ public class Player : Entity
     public void PickUpItem(ItemType itemType)
     {
         Inventory.AddItem(itemType);
+        InventoryWindow.Singleton.UpdateInventoryWindow(Inventory);
     }
 }
