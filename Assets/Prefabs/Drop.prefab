@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemType: 0
-  pickupTime: 3
+  pickupTime: 1
   rotationSpeed: 36
   bobSpeed: 1
   bobHeight: 0.08

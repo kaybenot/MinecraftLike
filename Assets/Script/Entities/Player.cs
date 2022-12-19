@@ -156,6 +156,13 @@ public class Player : Entity
         {
             if (GameManager.GameMenuShown)
                 GameManager.HideGameMenu();
+            else if (InventoryWindow.Singleton.isOpened)
+            {
+                InventoryWindow.Singleton.CloseInventory();
+                BlockInput = false;
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = false;
+            }
             else
                 GameManager.ShowGameMenu();
         }
@@ -166,9 +173,19 @@ public class Player : Entity
         if (context.started)
         {
             if(InventoryWindow.Singleton.isOpened)
+            {
                 InventoryWindow.Singleton.CloseInventory();
+                BlockInput = false;
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = false;
+            }
             else
+            {
                 InventoryWindow.Singleton.OpenInventory(Inventory);
+                BlockInput = true;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
         }
     }
 
