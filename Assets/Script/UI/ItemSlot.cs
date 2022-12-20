@@ -9,44 +9,43 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private GameObject image;
     [SerializeField] private TMP_Text text;
     
-    public ItemType Type
+    public Item Item
     {
-        get { return type; }
+        get => item;
         set
         {
-            type = value;
+            item = value;
             UpdateSlot();
         }
     }
-    
-    public int Amount
-    {
-        get { return amount; }
-        set
-        {
-            amount = value;
-            UpdateSlot();
-        }
-    }
+    public int SlotIndex { get; set; }
+    public Inventory Inventory { get; set; }
 
-    private ItemType type;
-    private int amount;
-    
+    private Item item;
+
     private void UpdateSlot()
     {
-        var uvSide = Block.BlockDatas[(BlockType)type].side;
-
-        if(type != ItemType.Nothing)
+        Inventory.Items[SlotIndex] = item;
+        if (item != null && item.ItemType != ItemType.Nothing)
         {
-            var tileWidth = GameManager.BlockAtlas.TileWidth;
-            var tileHeight = GameManager.BlockAtlas.TileHeight;
-
             image.SetActive(true);
             text.gameObject.SetActive(true);
-            text.text = amount.ToString();
+            text.text = item.Amount.ToString();
 
             RawImage rawImage = GetComponentInChildren<RawImage>();
-            rawImage.uvRect = new Rect(uvSide.x * tileWidth, uvSide.y * tileHeight, tileWidth, tileHeight);
+            rawImage.uvRect = item.IconRect;
         }
+        else
+        {
+            image.SetActive(false);
+            text.gameObject.SetActive(false);
+        }
+    }
+
+    public void Click()
+    {
+        var mouseItem = GameMouse.Item;
+        GameMouse.Item = item;
+        Item = mouseItem;
     }
 }

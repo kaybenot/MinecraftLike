@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 {
     [Header("Block atlas settings")]
     [SerializeField] private BlockAtlas blockAtlas;
+    [SerializeField] private Texture2D blockAtlasTexture;
     [SerializeField] private float textureOffset = 0.001f;
 
     [Header("World settings")]

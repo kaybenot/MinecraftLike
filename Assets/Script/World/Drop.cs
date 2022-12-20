@@ -7,6 +7,7 @@ using UnityEngine;
 public class Drop : MonoBehaviour
 {
     public ItemType ItemType = ItemType.Nothing;
+    
     [SerializeField] private float pickupTime = 3f;
     [SerializeField] private float rotationSpeed = 36f;
     [SerializeField] private float bobSpeed = 1f;
@@ -14,11 +15,12 @@ public class Drop : MonoBehaviour
 
     private Rigidbody rb;
     private bool canPickup;
+    private static Vector3 force;
 
     private void Start()
     {
         rb = GetComponentInParent<Rigidbody>();
-        pushUpwards();
+        push();
     }
 
     private void Update()
@@ -47,8 +49,10 @@ public class Drop : MonoBehaviour
         Destroy(gameObject.transform.parent.gameObject);
     }
 
-    public static void Spawn(Vector3 globalPosition, ItemType itemType)
+    public static void Spawn(Vector3 globalPosition, ItemType itemType, Vector3 pushForce)
     {
+        force = pushForce;
+        
         var dropObj = Instantiate(GameManager.DropPrefab, globalPosition, quaternion.identity);
         var drop = dropObj.GetComponentInChildren<Drop>();
         drop.ItemType = itemType;
@@ -67,9 +71,8 @@ public class Drop : MonoBehaviour
         m.RecalculateNormals();
     }
 
-    private void pushUpwards()
+    private void push()
     {
-        Vector2 randomDir = UnityEngine.Random.insideUnitCircle;
-        rb.AddForce(new Vector3(randomDir.x, 0.5f, randomDir.y) * 10f, ForceMode.Impulse);
+        rb.AddForce(force * 10f, ForceMode.Impulse);
     }
 }

@@ -32,7 +32,7 @@ public class Inventory
         }
     }
     
-    public Item getItem(int slot)
+    public Item GetItem(int slot)
     {
         return Items[slot];
     }

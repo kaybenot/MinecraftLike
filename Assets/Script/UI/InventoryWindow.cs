@@ -30,6 +30,7 @@ public class InventoryWindow : MonoBehaviour
         var obj = new GameObject("Inventory");
         var canvas = FindObjectOfType<Canvas>().transform;
         obj.transform.SetParent(canvas);
+        obj.transform.SetSiblingIndex(4);
         var rt = obj.AddComponent<RectTransform>();
         rt.localScale = Vector3.one;
         rt.offsetMin = Vector2.zero;
@@ -51,8 +52,9 @@ public class InventoryWindow : MonoBehaviour
             slotRT.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, margin + x * slotSize, slotSize);
             
             var slot = slotGO.GetComponent<ItemSlot>();
-            slot.Type = inventory.getItem(i).ItemType;
-            slot.Amount = inventory.getItem(i).Amount;
+            slot.Inventory = inventory;
+            slot.SlotIndex = i;
+            slot.Item = inventory.GetItem(i);
         }
         
         
@@ -68,8 +70,7 @@ public class InventoryWindow : MonoBehaviour
         var slots = openInventory.GetComponentsInChildren<ItemSlot>();
         for (var i = 0; i < inventory.Size; i++)
         {
-            slots[i].Type = inventory.getItem(i).ItemType;
-            slots[i].Amount = inventory.getItem(i).Amount;
+            slots[i].Item = inventory.GetItem(i);
         }
     }
     
@@ -77,6 +78,12 @@ public class InventoryWindow : MonoBehaviour
     {
         if (isOpened)
         {
+            if(GameMouse.Item != null && GameMouse.Item.ItemType != ItemType.Nothing)
+            {
+                for (var i = 0; i < GameMouse.Item.Amount; i++)
+                    Drop.Spawn(GameManager.Player.transform.position + Vector3.up * 1.5f, GameMouse.Item.ItemType, GameManager.Player.transform.forward * 2.5f);
+                GameMouse.Item = new Item(ItemType.Nothing);
+            }
             Destroy(openInventory);
             isOpened = false;
         }

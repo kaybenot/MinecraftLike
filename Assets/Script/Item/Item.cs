@@ -12,4 +12,15 @@ public class Item
         ItemType = itemType;
         Amount = 1;
     }
+    
+    public Rect IconRect
+    {
+        get
+        {
+            var uvSide = Block.BlockDatas[(BlockType)ItemType].side;
+            var tileWidth = GameManager.BlockAtlas.TileWidth;
+            var tileHeight = GameManager.BlockAtlas.TileHeight;
+            return new Rect(uvSide.x * tileWidth, uvSide.y * tileHeight, tileWidth, tileHeight);
+        }
+    }
 }
