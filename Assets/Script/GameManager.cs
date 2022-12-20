@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject gameMenu;
     [SerializeField] private GameObject gameInterface;
     [SerializeField] private GameObject debugInfo;
+    [SerializeField] private GameObject toolbar;
 
     public static BlockAtlas BlockAtlas { get; private set; }
     public static float TextureOffset { get; private set; }
@@ -73,6 +74,8 @@ public class GameManager : MonoBehaviour
             loadingScreen.SetActive(false);
             Interface.SetActive(true);
             spawnPlayer();
+            toolbar.SetActive(true);
+            toolbar.GetComponent<Toolbar>().Selected = 0;
         };
         World.WorldGenerator.GenerateWorld();
         await Task.Run(Save.RunSaveLoop);
@@ -84,6 +87,7 @@ public class GameManager : MonoBehaviour
         GameMenuShown = true;
         gameMenu_s.SetActive(true);
         Interface.SetActive(false);
+        Toolbar.Singleton.Close();
             
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
@@ -95,6 +99,7 @@ public class GameManager : MonoBehaviour
         GameMenuShown = false;
         gameMenu_s.SetActive(false);
         Interface.SetActive(true);
+        Toolbar.Singleton.Open();
         
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;

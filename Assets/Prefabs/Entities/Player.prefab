@@ -1073,6 +1073,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: f04ec205-f81b-4e4c-a386-25e0ad0c4d6e
     m_ActionName: Navigation/Debug[/Keyboard/f3]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4756606994710942796}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: ToolbarChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ac1dfb03-3e49-455d-95ad-1db172d597db
+    m_ActionName: Player/Toolbar[/Mouse/scroll/down,/Mouse/scroll/up]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

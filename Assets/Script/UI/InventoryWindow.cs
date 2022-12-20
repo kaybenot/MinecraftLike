@@ -57,7 +57,7 @@ public class InventoryWindow : MonoBehaviour
             slot.Item = inventory.GetItem(i);
         }
         
-        
+        Toolbar.Singleton.Close();
         openInventory = obj;
         isOpened = true;
     }
@@ -84,6 +84,7 @@ public class InventoryWindow : MonoBehaviour
                     Drop.Spawn(GameManager.Player.transform.position + Vector3.up * 1.5f, GameMouse.Item.ItemType, GameManager.Player.transform.forward * 2.5f);
                 GameMouse.Item = new Item(ItemType.Nothing);
             }
+            Toolbar.Singleton.Open();
             Destroy(openInventory);
             isOpened = false;
         }

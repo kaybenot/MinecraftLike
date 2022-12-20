@@ -189,6 +189,18 @@ public class Player : Entity
         }
     }
 
+    public void ToolbarChange(InputAction.CallbackContext context)
+    {
+        if (context.performed && Toolbar.Singleton != null)
+        {
+            var val = context.ReadValue<float>();
+            if (val > 0f)
+                Toolbar.Singleton.Selected += 1;
+            else if (val < 0f)
+                Toolbar.Singleton.Selected -= 1;
+        }
+    }
+
     private void destroyBlock()
     {
         Ray playerRay = new Ray(cam.transform.position, cam.transform.forward);
@@ -216,5 +228,6 @@ public class Player : Entity
     {
         Inventory.AddItem(itemType);
         InventoryWindow.Singleton.UpdateInventoryWindow(Inventory);
+        Toolbar.Singleton.RefreshSlots();
     }
 }

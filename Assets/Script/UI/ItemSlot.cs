@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ItemSlot : MonoBehaviour
 {
     [SerializeField] private GameObject image;
+    [SerializeField] private GameObject selectImage;
     [SerializeField] private TMP_Text text;
     
     public Item Item
@@ -40,6 +41,16 @@ public class ItemSlot : MonoBehaviour
             image.SetActive(false);
             text.gameObject.SetActive(false);
         }
+    }
+
+    public void Select()
+    {
+        selectImage.SetActive(true);
+    }
+
+    public void Deselect()
+    {
+        selectImage.SetActive(false);
     }
 
     public void Click()
