@@ -124,6 +124,7 @@ public class GameManager : MonoBehaviour
             lastChunkPos = Player.ChunkPosition;
             startCheckingTheMap();
         }
+        Save.SaveData.PlayerData.Deserialize();
     }
     
     private void startCheckingTheMap()

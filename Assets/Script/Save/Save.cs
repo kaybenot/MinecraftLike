@@ -37,17 +37,73 @@ public struct SerializableVector3Int
 }
 
 [Serializable]
+public struct SerializableVector3
+{
+    public float x;
+    public float y;
+    public float z;
+    
+    public SerializableVector3(float x, float y, float z)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    public override string ToString()
+    {
+        return $"[{x}, {y}, {z}]";
+    }
+    
+    public static implicit operator Vector3(SerializableVector3 val)
+    {
+        return new Vector3(val.x, val.y, val.z);
+    }
+
+    public static implicit operator SerializableVector3(Vector3 val)
+    {
+        return new SerializableVector3(val.x, val.y, val.z);
+    }
+}
+
+[Serializable]
+public class PlayerData
+{
+    public bool WasSaved = false;
+    public SerializableVector3 Position = Vector3.zero;
+    public Inventory Inventory;
+
+    public void Deserialize()
+    {
+        if (WasSaved)
+        {
+            GameManager.Player.transform.position = Position;
+            GameManager.Player.Inventory = Inventory;
+        }
+    }
+
+    public void Serialize()
+    {
+        WasSaved = true;
+        Position = GameManager.Player.transform.position;
+        Inventory = GameManager.Player.Inventory;
+    }
+}
+
+[Serializable]
 public class ChunkSaveData
 {
     public SerializableVector3Int MapSeed;
     public List<SerializableVector3Int> ModifiedChunks { get; }
     public Dictionary<SerializableVector3Int, Dictionary<SerializableVector3Int, BlockType>> ModifiedBlocks { get; }
 
+    public PlayerData PlayerData { get; }
+
     public ChunkSaveData(Vector2Int mapSeed)
     {
         MapSeed = new SerializableVector3Int(mapSeed.x, mapSeed.y, 0);
         ModifiedChunks = new List<SerializableVector3Int>();
         ModifiedBlocks = new Dictionary<SerializableVector3Int, Dictionary<SerializableVector3Int, BlockType>>();
+        PlayerData = new PlayerData();
     }
 }
 
@@ -65,6 +121,8 @@ public static class Save
     
     public static void SaveWorld(int slot)
     {
+        SaveData.PlayerData.Serialize();
+        
         if (!Directory.Exists("Saves/Save" + slot))
             Directory.CreateDirectory("Saves/Save" + slot);
         string path = "Saves/Save" + slot + "/World";

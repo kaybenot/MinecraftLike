@@ -26,7 +26,7 @@ public class WorldGenerator : MonoBehaviour
 
     public async void GenerateWorld()
     {
-        await generateWorld(Vector3Int.zero);
+        await generateWorld(Vector3Int.RoundToInt(Save.SaveData.PlayerData.Position));
     }
     
     public async void LoadAdditionalChunksRequest(Player player)
