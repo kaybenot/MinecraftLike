@@ -14,5 +14,6 @@ public enum BlockType
     TreeLeavesSolid,
     Water,
     Sand,
+    Plank,
     Total
 }

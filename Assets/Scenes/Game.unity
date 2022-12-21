@@ -1535,6 +1535,7 @@ GameObject:
   - component: {fileID: 1341329658}
   - component: {fileID: 1341329659}
   - component: {fileID: 1341329660}
+  - component: {fileID: 1341329661}
   m_Layer: 0
   m_Name: == Managers ==
   m_TagString: Untagged
@@ -1713,6 +1714,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseItem: {fileID: 941700989}
+--- !u!114 &1341329661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341329653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925e93ae28c4484428032eca581735fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CraftingRecipes:
+  - {fileID: 11400000, guid: b31c75748627c494d9ab97aa34605bf4, type: 2}
 --- !u!1 &1349348818
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public enum ItemType
     TreeLeavesTransparent,
     TreeLeavesSolid,
     Water,
-    Sand
+    Sand,
+    Plank
 }
     

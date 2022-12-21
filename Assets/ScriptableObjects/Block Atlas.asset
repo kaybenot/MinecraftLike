@@ -96,3 +96,12 @@ MonoBehaviour:
     side: {x: 14, y: 15}
     isSolid: 1
     generatesCollider: 1
+  - BlockType: 10
+    DropType: 10
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 5, y: 15}
+    down: {x: 5, y: 15}
+    side: {x: 5, y: 15}
+    isSolid: 1
+    generatesCollider: 1
