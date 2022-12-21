@@ -139,7 +139,22 @@ public class Player : Entity
         if (BlockInput)
             return;
         if (context.performed)
+        {
             OnPlace?.Invoke();
+            if (Physics.Raycast(playerHead.transform.position, playerHead.forward, out RaycastHit hit, range, groundMask))
+            {
+                var item = Inventory.GetItem(Toolbar.Singleton.Selected);
+                if (item.ItemType == ItemType.Nothing)
+                    return;
+                
+                var blockPos = Vector3Int.RoundToInt(hit.point + hit.normal * 0.5f);
+                if(isPlayerInside(blockPos, new Vector3(0.75f, 1.8f, 0.75f)))
+                    return;
+                GameManager.World.SetBlock(blockPos, (BlockType) item.ItemType);
+                Inventory.DecreaseItem(Toolbar.Singleton.Selected);
+            }
+            Toolbar.Singleton.RefreshSlots();
+        }
     }
 
     public void Run(InputAction.CallbackContext context)
@@ -199,6 +214,14 @@ public class Player : Entity
             else if (val < 0f)
                 Toolbar.Singleton.Selected -= 1;
         }
+    }
+
+    private bool isPlayerInside(Vector3 pos, Vector3 extend)
+    {
+        var playerPos = transform.position;                                                                                                                                                                 
+        return pos.x <= playerPos.x + extend.x && pos.x >= playerPos.x - extend.x &&
+               pos.y <= playerPos.y + extend.y && pos.y >= playerPos.y &&
+               pos.z <= playerPos.z + extend.z && pos.z >= playerPos.z - extend.z;
     }
 
     private void destroyBlock()

@@ -41,6 +41,14 @@ public class Inventory
     {
         Items[slot] = new Item(ItemType.Nothing);
     }
+
+    public void DecreaseItem(int slot)
+    {
+        if (Items[slot].Amount > 1)
+            Items[slot].Amount--;
+        else
+            RemoveItem(slot);
+    }
     
     public int ContainsItem(ItemType itemType)
     {
