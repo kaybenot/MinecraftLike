@@ -5,10 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CraftingRecipe", menuName = "Engine/CraftingRecipe")]
 public class CraftingRecipe : ScriptableObject
 {
-    /// <summary>
-    /// If recipe is not big, use only first 2 values!
-    /// </summary>
-    public bool BigRecipe = true;
+    public Vector2Int RecipeSize;
     public ItemType Output;
-    public ItemType[,] Ingredients;
+    public ItemType[] Ingredients;
 }

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc08608c26452d4c98d81cde4795775, type: 3}
   m_Name: Plank
   m_EditorClassIdentifier: 
-  BigRecipe: 1
+  RecipeSize: {x: 1, y: 1}
   Output: 10

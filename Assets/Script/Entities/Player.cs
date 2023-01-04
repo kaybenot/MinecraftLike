@@ -59,8 +59,8 @@ public class Player : Entity
 
     private void Update()
     {
-        rb.velocity = inputForce.z * player.forward * speed + 
-                      inputForce.x * player.right * speed + Vector3.up * rb.velocity.y;
+        rb.velocity = player.forward * (inputForce.z  * speed) + 
+                      player.right * (inputForce.x * speed) + Vector3.up * rb.velocity.y;
         collitionTransform.rotation = Quaternion.identity;
     }
 
@@ -76,6 +76,14 @@ public class Player : Entity
             if(contact.normal.y >= minGroundDotProduct)
                 Grounded = true;
         }
+    }
+    
+    public void DropFromPlayer(Item item)
+    {
+        if(item == null || item.ItemType == ItemType.Nothing)
+            return;
+        for(int i = 0; i < item.Amount; i++)
+            Drop.Spawn(GameManager.Player.transform.position + Vector3.up * 1.5f, item.ItemType, GameManager.Player.transform.forward * 2.5f);
     }
 
     public void Move(InputAction.CallbackContext context)

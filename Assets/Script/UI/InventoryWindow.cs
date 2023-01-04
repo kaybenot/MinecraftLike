@@ -14,13 +14,15 @@ public class InventoryWindow : MonoBehaviour
     
     public static InventoryWindow Singleton;
 
-    private void Awake()
+    public InventoryWindow()
     {
         Singleton = this;
     }
 
     public void OpenInventory(Inventory inventory)
     {
+        CraftingUI.Singleton.gameObject.SetActive(true);
+        
         var size = inventory.Size;
         const float slotSize = 80f;
         const float margin = 10f;
@@ -30,7 +32,7 @@ public class InventoryWindow : MonoBehaviour
         var obj = new GameObject("Inventory");
         var canvas = FindObjectOfType<Canvas>().transform;
         obj.transform.SetParent(canvas);
-        obj.transform.SetSiblingIndex(4);
+        obj.transform.SetSiblingIndex(5);
         var rt = obj.AddComponent<RectTransform>();
         rt.localScale = Vector3.one;
         rt.offsetMin = Vector2.zero;
@@ -78,10 +80,11 @@ public class InventoryWindow : MonoBehaviour
     {
         if (isOpened)
         {
+            CraftingUI.Singleton.gameObject.SetActive(false);
+            
             if(GameMouse.Item != null && GameMouse.Item.ItemType != ItemType.Nothing)
             {
-                for (var i = 0; i < GameMouse.Item.Amount; i++)
-                    Drop.Spawn(GameManager.Player.transform.position + Vector3.up * 1.5f, GameMouse.Item.ItemType, GameManager.Player.transform.forward * 2.5f);
+                GameManager.Player.DropFromPlayer(GameMouse.Item);
                 GameMouse.Item = new Item(ItemType.Nothing);
             }
             Toolbar.Singleton.Open();

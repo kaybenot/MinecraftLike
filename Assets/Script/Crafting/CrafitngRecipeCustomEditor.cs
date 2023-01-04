@@ -7,27 +7,28 @@ using UnityEngine;
 [CustomEditor(typeof(CraftingRecipe))]
 public class CrafitngRecipeCustomEditor : Editor
 {
-    private CraftingRecipe recipe;
-
-    private void OnEnable()
-    {
-        recipe = (CraftingRecipe)target;
-        if (recipe.Ingredients == null)
-            recipe.Ingredients = new ItemType[3, 3];
-    }
 
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
+        
+        serializedObject.Update();
+        
+        var recipe = (CraftingRecipe) target;
+        
+        if (recipe.Ingredients == null)
+            recipe.Ingredients = new ItemType[9];
 
         EditorGUILayout.Separator();
         EditorGUILayout.LabelField("Recipe", EditorStyles.boldLabel);
-        for(var x = 0; x < 3; x++)
+        for(var y = 2; y >= 0; y--)
         {
             EditorGUILayout.BeginHorizontal();
-            for (var y = 0; y < 3; y++)
-                recipe.Ingredients[x, y] = (ItemType)EditorGUILayout.EnumFlagsField(recipe.Ingredients[x, y]);
+            for (var x = 0; x < 3; x++)
+                recipe.Ingredients[x + y * 3] = (ItemType)EditorGUILayout.EnumFlagsField(recipe.Ingredients[x + y * 3]);
             EditorGUILayout.EndHorizontal();
         }
+
+        serializedObject.ApplyModifiedProperties();
     }
 }

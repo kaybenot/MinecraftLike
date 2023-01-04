@@ -33,6 +33,8 @@ public class GameMouse : MonoBehaviour
         get => item;
     }
     
+    public static bool HasItem => item != null && item.ItemType != ItemType.Nothing && item.Amount > 0;
+    
     private static bool isDragging = false;
     private static Item item = new Item(ItemType.Nothing);
     private static GameObject _mouseItem;
@@ -48,6 +50,24 @@ public class GameMouse : MonoBehaviour
         if (isDragging)
         {
             rt.position = Input.mousePosition;
+        }
+    }
+
+    public static void UpdateVisuals()
+    {
+        if (item != null && item.ItemType != ItemType.Nothing)
+        {
+            isDragging = true;
+            _mouseItem.SetActive(true);
+            _mouseItem.GetComponentInChildren<RawImage>().uvRect = item.IconRect;
+            _mouseItem.GetComponentInChildren<TMP_Text>().text = item.Amount.ToString();
+            if (rt == null)
+                rt = _mouseItem.GetComponent<RectTransform>();
+        }
+        else
+        {
+            isDragging = false;
+            _mouseItem.SetActive(false);
         }
     }
 }

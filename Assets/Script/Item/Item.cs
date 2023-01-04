@@ -6,13 +6,25 @@ using UnityEngine;
 [Serializable]
 public class Item
 {
-    public ItemType ItemType { get; }
+    public ItemType ItemType { get; private set; }
     public int Amount { get; set; }
+    
+    public bool Exists => Amount > 0 && ItemType != ItemType.Nothing;
 
     public Item(ItemType itemType)
     {
         ItemType = itemType;
         Amount = 1;
+    }
+    
+    public void DecreaseAmount()
+    {
+        Amount--;
+        if(Amount <= 0)
+        {
+            ItemType = ItemType.Nothing;
+            Amount = 1;
+        }
     }
     
     public Rect IconRect
