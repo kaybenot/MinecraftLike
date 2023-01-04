@@ -11,16 +11,16 @@ public class Item
     
     public bool Exists => Amount > 0 && ItemType != ItemType.Nothing;
 
-    public Item(ItemType itemType)
+    public Item(ItemType itemType, int amount = 1)
     {
         ItemType = itemType;
-        Amount = 1;
+        Amount = amount;
     }
     
     public void DecreaseAmount()
     {
         Amount--;
-        if(Amount <= 0)
+        if (Amount <= 0)
         {
             ItemType = ItemType.Nothing;
             Amount = 1;

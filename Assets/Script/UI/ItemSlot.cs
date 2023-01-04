@@ -56,6 +56,13 @@ public class ItemSlot : MonoBehaviour
     public void Click()
     {
         var mouseItem = GameMouse.Item;
+        if (mouseItem.ItemType == item.ItemType)
+        {
+            item.Amount += mouseItem.Amount;
+            UpdateSlot();
+            GameMouse.Item = new Item(ItemType.Nothing);
+            return;
+        }
         GameMouse.Item = item;
         Item = mouseItem;
     }

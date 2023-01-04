@@ -9,7 +9,7 @@ public class CraftingUI : MonoBehaviour
     
     public static CraftingUI Singleton;
 
-    public ItemType GetRecipe()
+    public (ItemType, int) GetRecipe()
     {
         foreach (var recipe in CraftingHandler.Singleton.CraftingRecipes)
         {
@@ -27,11 +27,11 @@ public class CraftingUI : MonoBehaviour
                 }
 
                 if (matches && otherEmpty(x, y, recipe))
-                    return recipe.Output;
+                    return (recipe.Output, recipe.OutputAmount);
             }
         }
 
-        return ItemType.Nothing;
+        return (ItemType.Nothing, 1);
     }
 
     private bool otherEmpty(int x, int y, CraftingRecipe recipe)

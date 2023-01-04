@@ -7,5 +7,6 @@ public class CraftingRecipe : ScriptableObject
 {
     public Vector2Int RecipeSize;
     public ItemType Output;
+    public int OutputAmount;
     public ItemType[] Ingredients;
 }

@@ -65,7 +65,11 @@ public class CraftingSlot : MonoBehaviour
         if(resultSlot && ResultSlot.Item != null && ResultSlot.Item.ItemType != ItemType.Nothing &&
            (GameMouse.Item == null || GameMouse.Item.ItemType == ItemType.Nothing))
         {
-            CraftingSlots.ForEach(slot => slot.item = new Item(ItemType.Nothing));
+            CraftingSlots.ForEach(slot =>
+            {
+                slot.item = new Item(ItemType.Nothing);
+                slot.UpdateSlot();
+            });
             GameMouse.Item = ResultSlot.Item;
             ResultSlot.Item = new Item(ItemType.Nothing);
         }
@@ -76,9 +80,7 @@ public class CraftingSlot : MonoBehaviour
             // If different items
             if(GameMouse.HasItem && Item.Exists && mouseItem.ItemType != Item.ItemType)
                 return;
-            
-            
-            
+
             if (!Item.Exists && GameMouse.HasItem)
             {
                 Item = new Item(mouseItem.ItemType);
@@ -98,9 +100,9 @@ public class CraftingSlot : MonoBehaviour
                 Item = new Item(ItemType.Nothing);
             }
 
-            var recipe = CraftingUI.Singleton.GetRecipe();
+            var (recipe, amount) = CraftingUI.Singleton.GetRecipe();
             if (recipe != ItemType.Nothing)
-                ResultSlot.Item = new Item(recipe);
+                ResultSlot.Item = new Item(recipe, amount);
             else if(ResultSlot.Item != null && ResultSlot.Item.ItemType != ItemType.Nothing)
                 ResultSlot.Item = new Item(ItemType.Nothing);
             ResultSlot.UpdateSlot();
