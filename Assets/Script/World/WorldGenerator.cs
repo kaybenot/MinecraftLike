@@ -113,7 +113,7 @@ public class WorldGenerator : MonoBehaviour
         {
             foreach (var chunk in Chunk.Chunks.Values)
             foreach (var treeLeaves in chunk.ChunkGenerator.TreeData.TreeLeavesSolid)
-                chunk.SetBlock(treeLeaves, BlockType.TreeLeavesSolid, true);
+                chunk.SetBlock(treeLeaves, BlockType.Leaves, true);
         });
         
         if (!World.IsWorldCreated)

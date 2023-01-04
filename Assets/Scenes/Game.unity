@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   next: {fileID: 0}
-  undergroundBlockType: 9
+  undergroundBlockType: 8
 --- !u!114 &58852152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,7 +336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   next: {fileID: 58852151}
-  surfaceBlockType: 9
+  surfaceBlockType: 8
 --- !u!114 &58852153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1367,7 +1367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   next: {fileID: 1161349294}
-  surfaceBlockType: 1
+  surfaceBlockType: 2
 --- !u!114 &1161349294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1381,7 +1381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   next: {fileID: 0}
-  undergroundBlockType: 4
+  undergroundBlockType: 1
 --- !u!114 &1161349295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1728,6 +1728,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CraftingRecipes:
   - {fileID: 11400000, guid: b31c75748627c494d9ab97aa34605bf4, type: 2}
+  - {fileID: 11400000, guid: 4ec73e6443127b549a00aa24aa2a866d, type: 2}
+  - {fileID: 11400000, guid: 289cda5c37b545d46b11f36d8daca8f6, type: 2}
+  - {fileID: 11400000, guid: ef22ffdf7c653174db4295d11d91de05, type: 2}
 --- !u!1 &1349348818
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ecc08608c26452d4c98d81cde4795775, type: 3}
-  m_Name: Plank
+  m_Name: Sandstone
   m_EditorClassIdentifier: 
-  RecipeSize: {x: 1, y: 1}
-  Output: 5
-  OutputAmount: 4
-  Ingredients: 0c0000000000000000000000000000000000000000000000000000000000000000000000
+  RecipeSize: {x: 2, y: 2}
+  Output: 19
+  OutputAmount: 1
+  Ingredients: 080000000800000000000000080000000800000000000000000000000000000000000000

@@ -15,13 +15,13 @@ public class TreeLayer : BlockLayer
         {
             Vector3Int localPos = new Vector3Int(position.x, surfaceHeightNoise, position.z);
             BlockType type = chunk.GetBlock(localPos).BlockType;
-            if (type == BlockType.GrassDirt)
+            if (type == BlockType.Grass)
             {
                 chunk.SetBlock(localPos, BlockType.Dirt, true);
                 for (int i = 1; i < 5; i++)
                 {
                     localPos.y = surfaceHeightNoise + i;
-                    chunk.SetBlock(localPos, BlockType.TreeTrunk, true);
+                    chunk.SetBlock(localPos, BlockType.Log, true);
                 }
 
                 foreach (var pos in treeLeavesPositions)

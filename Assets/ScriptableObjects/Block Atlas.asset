@@ -24,8 +24,8 @@ MonoBehaviour:
     side: {x: 0, y: 0}
     isSolid: 0
     generatesCollider: 0
-  - BlockType: 1
-    DropType: 1
+  - BlockType: 2
+    DropType: 3
     MinDropAmount: 1
     MaxDropAmount: 1
     up: {x: 1, y: 15}
@@ -33,8 +33,8 @@ MonoBehaviour:
     side: {x: 2, y: 15}
     isSolid: 1
     generatesCollider: 1
-  - BlockType: 2
-    DropType: 2
+  - BlockType: 3
+    DropType: 3
     MinDropAmount: 1
     MaxDropAmount: 1
     up: {x: 3, y: 15}
@@ -42,7 +42,7 @@ MonoBehaviour:
     side: {x: 3, y: 15}
     isSolid: 1
     generatesCollider: 1
-  - BlockType: 4
+  - BlockType: 1
     DropType: 4
     MinDropAmount: 1
     MaxDropAmount: 1
@@ -51,8 +51,8 @@ MonoBehaviour:
     side: {x: 0, y: 15}
     isSolid: 1
     generatesCollider: 1
-  - BlockType: 5
-    DropType: 5
+  - BlockType: 12
+    DropType: 12
     MinDropAmount: 1
     MaxDropAmount: 1
     up: {x: 3, y: 14}
@@ -60,10 +60,10 @@ MonoBehaviour:
     side: {x: 4, y: 14}
     isSolid: 1
     generatesCollider: 1
-  - BlockType: 6
-    DropType: 6
-    MinDropAmount: 1
-    MaxDropAmount: 1
+  - BlockType: 13
+    DropType: 0
+    MinDropAmount: 0
+    MaxDropAmount: 0
     up: {x: 8, y: 14}
     down: {x: 8, y: 14}
     side: {x: 8, y: 14}
@@ -73,12 +73,12 @@ MonoBehaviour:
     DropType: 7
     MinDropAmount: 1
     MaxDropAmount: 1
-    up: {x: 9, y: 14}
-    down: {x: 9, y: 14}
-    side: {x: 9, y: 14}
+    up: {x: 13, y: 15}
+    down: {x: 13, y: 15}
+    side: {x: 13, y: 15}
     isSolid: 1
     generatesCollider: 1
-  - BlockType: 8
+  - BlockType: 33
     DropType: 0
     MinDropAmount: 0
     MaxDropAmount: 0
@@ -87,8 +87,8 @@ MonoBehaviour:
     side: {x: 12, y: 0}
     isSolid: 0
     generatesCollider: 0
-  - BlockType: 9
-    DropType: 9
+  - BlockType: 8
+    DropType: 8
     MinDropAmount: 1
     MaxDropAmount: 1
     up: {x: 14, y: 15}
@@ -96,12 +96,237 @@ MonoBehaviour:
     side: {x: 14, y: 15}
     isSolid: 1
     generatesCollider: 1
-  - BlockType: 10
-    DropType: 10
+  - BlockType: 5
+    DropType: 5
     MinDropAmount: 1
     MaxDropAmount: 1
     up: {x: 5, y: 15}
     down: {x: 5, y: 15}
     side: {x: 5, y: 15}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 19
+    DropType: 19
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 4, y: 13}
+    down: {x: 5, y: 13}
+    side: {x: 6, y: 13}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 32
+    DropType: 32
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 11, y: 9}
+    down: {x: 5, y: 15}
+    side: {x: 12, y: 9}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 34
+    DropType: 34
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 3, y: 13}
+    down: {x: 3, y: 13}
+    side: {x: 8, y: 8}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 4
+    DropType: 4
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 4, y: 15}
+    down: {x: 4, y: 15}
+    side: {x: 4, y: 15}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 9
+    DropType: 9
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 15, y: 15}
+    down: {x: 15, y: 15}
+    side: {x: 15, y: 15}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 6
+    DropType: 6
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 5, y: 10}
+    down: {x: 5, y: 10}
+    side: {x: 5, y: 10}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 10
+    DropType: 10
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 0, y: 14}
+    down: {x: 0, y: 14}
+    side: {x: 0, y: 14}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 11
+    DropType: 11
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 1, y: 14}
+    down: {x: 1, y: 14}
+    side: {x: 1, y: 14}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 14
+    DropType: 14
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 12, y: 14}
+    down: {x: 12, y: 14}
+    side: {x: 12, y: 14}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 15
+    DropType: 0
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 13, y: 14}
+    down: {x: 13, y: 14}
+    side: {x: 13, y: 14}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 16
+    DropType: 16
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 14, y: 14}
+    down: {x: 14, y: 14}
+    side: {x: 14, y: 14}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 17
+    DropType: 17
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 15, y: 14}
+    down: {x: 15, y: 14}
+    side: {x: 15, y: 14}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 18
+    DropType: 17
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 3, y: 13}
+    down: {x: 3, y: 13}
+    side: {x: 0, y: 13}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 20
+    DropType: 20
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 5, y: 13}
+    down: {x: 5, y: 13}
+    side: {x: 5, y: 13}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 21
+    DropType: 21
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 4, y: 13}
+    down: {x: 4, y: 13}
+    side: {x: 7, y: 13}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 22
+    DropType: 22
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 4, y: 13}
+    down: {x: 4, y: 13}
+    side: {x: 8, y: 13}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 23
+    DropType: 23
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 9, y: 13}
+    down: {x: 9, y: 13}
+    side: {x: 9, y: 13}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 24
+    DropType: 24
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 9, y: 13}
+    down: {x: 9, y: 13}
+    side: {x: 9, y: 13}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 25
+    DropType: 25
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 1, y: 10}
+    down: {x: 1, y: 10}
+    side: {x: 1, y: 10}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 26
+    DropType: 26
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 2, y: 10}
+    down: {x: 2, y: 10}
+    side: {x: 2, y: 10}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 27
+    DropType: 27
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 3, y: 10}
+    down: {x: 3, y: 10}
+    side: {x: 4, y: 10}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 28
+    DropType: 28
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 10, y: 10}
+    down: {x: 10, y: 10}
+    side: {x: 10, y: 10}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 29
+    DropType: 29
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 6, y: 10}
+    down: {x: 7, y: 10}
+    side: {x: 8, y: 10}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 30
+    DropType: 30
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 9, y: 9}
+    down: {x: 9, y: 9}
+    side: {x: 9, y: 9}
+    isSolid: 1
+    generatesCollider: 1
+  - BlockType: 31
+    DropType: 31
+    MinDropAmount: 1
+    MaxDropAmount: 1
+    up: {x: 10, y: 9}
+    down: {x: 10, y: 9}
+    side: {x: 10, y: 9}
     isSolid: 1
     generatesCollider: 1
