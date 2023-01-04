@@ -7,7 +7,6 @@ using UnityEngine;
 [CustomEditor(typeof(CraftingRecipe))]
 public class CrafitngRecipeCustomEditor : Editor
 {
-
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
