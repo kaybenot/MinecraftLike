@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class CraftingUI : MonoBehaviour
 {
-    public Item[,] CraftingGrid = new Item[3, 3];
+    public Item[,] CraftingGrid { get; } = new Item[3, 3];
     
-    public static CraftingUI Singleton;
+    public static CraftingUI Singleton { get; private set; }
 
     public (ItemType, int) GetRecipe()
     {

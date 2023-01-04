@@ -43,7 +43,8 @@ public class CraftingSlot : MonoBehaviour
 
     private void UpdateSlot()
     {
-        CraftingUI.Singleton.CraftingGrid[slotPosition.x, slotPosition.y] = item;
+        if(!resultSlot)
+            CraftingUI.Singleton.CraftingGrid[slotPosition.x, slotPosition.y] = item;
         if (item != null && item.ItemType != ItemType.Nothing)
         {
             image.SetActive(true);

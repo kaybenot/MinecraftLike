@@ -244,7 +244,9 @@ public class Player : Entity
         Vector3Int pos = Vector3Int.RoundToInt(hit.point - hit.normal * 0.1f);
         var chunk = GameManager.World.GetChunk(pos);
         Vector2 randomDir = UnityEngine.Random.insideUnitCircle;
-        Drop.Spawn(pos, (ItemType) chunk.GetBlockGlobalCoord(pos).BlockType, new Vector3(randomDir.x, 0.3f, randomDir.y));
+
+        var drop = Block.BlockDatas[chunk.GetBlockGlobalCoord(pos).BlockType].DropType;
+        Drop.Spawn(pos, drop, new Vector3(randomDir.x, 0.3f, randomDir.y));
         GameManager.World.SetBlock(pos, BlockType.Air);
 
         if (chunk.IsOnEdge(pos))
